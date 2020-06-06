@@ -3,10 +3,10 @@
 
 class Game {
 private:
-    sf::RenderWindow window;
+	sf::RenderWindow window;
 public:
-    void run();
+	void run();
 
-    Game();
-    ~Game();
+	Game();
+	~Game();
 };

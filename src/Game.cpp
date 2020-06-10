@@ -33,7 +33,7 @@ Game::Game() {
 	//* dzieki View wszedzie zakladamy ze nasze okno ma rozmiar 1920x1080
 	//* uzywamy funkcji window.mapPixelToCoords(point) do zamiany wspolrzednych
 	window.setView(sf::View(sf::FloatRect(0, 0, 1920, 1080)));
-	
+	sf::Mouse::setPosition(sf::Vector2i(Settings::get<unsigned int>("width") / 2, Settings::get<unsigned int>("height") / 2), window);
 	window.setFramerateLimit(Settings::get<unsigned int>("framerate"));
 	ScreenManager::setup();
 }

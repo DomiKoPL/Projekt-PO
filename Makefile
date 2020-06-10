@@ -1,5 +1,6 @@
 CC := g++
-FLAGS := -O3 -std=c++17 -g -Wall -Wextra -pedantic-errors -Wfatal-errors -fsanitize=address -fsanitize=undefined -g
+FLAGS := -O3 -std=c++17 -g -Wall -Wextra -pedantic-errors -Wfatal-errors
+# -fsanitize=address -fsanitize=undefined -g
 SFML_LIBS := $(shell pkg-config sfml-all --libs)
 TARGET := gra
 

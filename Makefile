@@ -1,11 +1,11 @@
 CC := g++
-FLAGS := -O3 -std=c++17 -g -Wall -Wextra -pedantic-errors -Wfatal-errors 
-# -fsanitize=address -fsanitize=undefined -g
+FLAGS := -O3 -std=c++17 -g -Wall -Wextra -pedantic-errors -Wfatal-errors -fsanitize=address -fsanitize=undefined -g
 SFML_LIBS := $(shell pkg-config sfml-all --libs)
 TARGET := gra
 
 SRCS := $(wildcard src/*.cpp)\
-		$(wildcard src/screens/*.cpp)
+		$(wildcard src/screens/*.cpp)\
+		$(wildcard src/gui/*.cpp)
 
 #* tutaj trzeba dopisac foldery tak jak w przykladzie nizej
 # SRCS := $(wildcard src/*.cpp) \
@@ -27,8 +27,10 @@ obj/%.o: src/%.cpp src/%.hpp
 obj/%.o: src/screens/%.cpp src/screens/%.hpp
 	$(CC) $(FLAGS) -c $< -o $(addprefix obj/, $(notdir $(patsubst %.cpp,%.o,$<)))
 
-#* jezeli zostal dodany nowy folder to trzeba dla niego stworzyc zasade
+obj/%.o: src/gui/%.cpp src/gui/%.hpp
+	$(CC) $(FLAGS) -c $< -o $(addprefix obj/, $(notdir $(patsubst %.cpp,%.o,$<)))
 
+#* jezeli zostal dodany nowy folder to trzeba dla niego stworzyc zasade
 # obj/%.o: src/gui/%.cpp src/gui/%.hpp
 # 	$(CC) $(FLAGS) -c $< -o $(addprefix obj/, $(notdir $(patsubst %.cpp,%.o,$<)))
 

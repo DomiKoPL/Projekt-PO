@@ -1,14 +1,14 @@
 #include "ScreenManager.hpp"
 
-BaseScreen* ScreenManager::current_screen;
-GameScreen* ScreenManager::game_screen;
-
 void ScreenManager::draw(sf::RenderWindow& window) {
+    if(close_window) {
+        window.close();
+    }
     current_screen->draw(window);
 }
 
-void ScreenManager::update(sf::RenderWindow& window, float time_diff) {
-    current_screen->update(window, time_diff);
+void ScreenManager::update(sf::RenderWindow& window, float elapsed) {
+    current_screen->update(window, elapsed);
 }
 
 void ScreenManager::handle_event(sf::RenderWindow& window, sf::Event event) {
@@ -16,7 +16,22 @@ void ScreenManager::handle_event(sf::RenderWindow& window, sf::Event event) {
 }
 
 void ScreenManager::setup() {
-    game_screen = new GameScreen();
+    screens["GameScreen"] = new GameScreen();
+    screens["MainMenuScreen"] = new MainMenuScreen();
 
-    current_screen = game_screen;
+    set_screen("MainMenuScreen");
+}
+
+void ScreenManager::clear() {
+    for(auto it : screens) {
+        delete it.second;
+    }
+}
+
+void ScreenManager::set_screen(const std::string screen_name) {
+    current_screen = screens[screen_name];
+}
+
+void ScreenManager::close() {
+    close_window = true;
 }

@@ -1,20 +1,22 @@
 #include "GameScreen.hpp"
 #include <iostream>
 #include "ScreenManager.hpp"
+#include "../Log.hpp"
 
 void GameScreen::draw(sf::RenderWindow& window) {
-    std::cerr << "DRAW GAME\n";
+    Log::log(Log::INFO, "DRAW GAME\n");
 }
 
-void GameScreen::update(sf::RenderWindow& window, float time_diff) {
-    std::cerr << "UPDATE GAME\n";
+void GameScreen::update(sf::RenderWindow& window, float elapsed) {
+    Log::log(Log::INFO, "UPDATE GAME\n");
 }
 
 void GameScreen::handle_event(sf::RenderWindow& window, sf::Event event) {
-    std::cerr << "HANDLE GAME\n";
+    Log::log(Log::INFO, "HANDLE GAME\n");
+
     if(event.type == sf::Event::KeyPressed) {
         if(event.key.code == sf::Keyboard::Escape) {
-            // ScreenManager::load_screen("MenuScreen");
+            // to jest nic ciekawego
         }
     }
 }

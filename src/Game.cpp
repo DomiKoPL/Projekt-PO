@@ -1,6 +1,7 @@
 #include "Game.hpp"
 #include "screens/ScreenManager.hpp"
 #include "Settings.hpp"
+#include "Log.hpp"
 
 void Game::run() {
 	sf::Clock clock;
@@ -12,8 +13,8 @@ void Game::run() {
 			}
 		}
 
-		auto time_diff = clock.restart().asSeconds();
-		ScreenManager::update(window, time_diff);
+		auto elapsed = clock.restart().asSeconds();
+		ScreenManager::update(window, elapsed);
 
 		window.clear(sf::Color::Black);
 
@@ -24,14 +25,15 @@ void Game::run() {
 }
 
 Game::Game() {
-	// Settings::get<unsigned int>("width");
-	// Settings::get<int>("highscore");
+	Log::set_level(Log::INFO);
+	Settings::load();
 
-	window.create(sf::VideoMode(720, 480), "Floating Gra", sf::Style::None | sf::Style::Close);
-	window.setFramerateLimit(60);
+	window.create(sf::VideoMode(Settings::get<unsigned int>("width"), Settings::get<unsigned int>("height")), "Floating Gra", sf::Style::None | sf::Style::Close | sf::Style::Resize);
+	window.setFramerateLimit(Settings::get<unsigned int>("framerate"));
 	ScreenManager::setup();
 }
 
 Game::~Game() {
-	
+	Settings::save();
+	ScreenManager::clear();
 }

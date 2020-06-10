@@ -27,45 +27,12 @@ void Button::update(sf::RenderWindow& window) {
     auto roz = sf::Vector2f(m_sprite.getTexture()->getSize());
     m_sprite.setOrigin(roz / 2.f);
 
-    if(size.x != 0 and size.y != 0) {
-        auto window_size = window.getSize();
-        auto sprite_size = m_sprite.getTexture()->getSize();
-
-        sf::Vector2f scale = {size.x / sprite_size.x * window_size.x / 1920.f, 
-                                size.y / sprite_size.y * window_size.y / 1080.f};
-                                
-        if(m_sprite.getScale() != scale) {
-            m_sprite.setScale(scale);
-        }
-    } else if(size.x != 0) {
-        auto window_size = window.getSize();
-        auto sprite_size = m_sprite.getTexture()->getSize();
-
-        sf::Vector2f scale = {size.x / sprite_size.x * window_size.x / 1920.f, 
-                                size.x / sprite_size.x * window_size.x / 1920.f};
-
-        if(m_sprite.getScale() != scale) {
-            m_sprite.setScale(scale);
-        }
-    } else if(size.y != 0) {
-        auto window_size = window.getSize();
-        auto sprite_size = m_sprite.getTexture()->getSize();
-
-        sf::Vector2f scale = {size.y / sprite_size.y * window_size.y / 1080.f, 
-                                size.y / sprite_size.y * window_size.y / 1080.f};
-
-        if(m_sprite.getScale() != scale) {
-            m_sprite.setScale(scale);
-        }
-    }
-
-
     // no highlight texture
     if(m_highlight_texture.getSize() == sf::Vector2u(0, 0)) {
         return;
     }
 
-    auto[x, y] = sf::Mouse::getPosition(window);
+    auto[x, y] = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
     if(getTransform().transformRect(m_sprite.getGlobalBounds()).contains(x, y)) {
         if(m_sprite.getTexture() != &(m_highlight_texture)) {
@@ -83,7 +50,7 @@ void Button::update(sf::RenderWindow& window) {
 void Button::update(sf::RenderWindow& window, sf::Event event) {
     if(event.type == sf::Event::MouseButtonPressed) {
         if(event.mouseButton.button == sf::Mouse::Left) {
-            auto[x, y] = sf::Mouse::getPosition(window);
+            auto[x, y] = window.mapPixelToCoords(sf::Mouse::getPosition(window));
             if(getTransform().transformRect(m_sprite.getGlobalBounds()).contains(x, y)) {
                 m_func_when_clicked();
             }
@@ -92,11 +59,21 @@ void Button::update(sf::RenderWindow& window, sf::Event event) {
 }
 
 void Button::set_width(float width) {
-    size.x = width;
+    auto sprite_size = m_sprite.getTexture()->getSize();
+
+    sf::Vector2f scale = {width / sprite_size.x, 
+                            width / sprite_size.x};
+
+    m_sprite.setScale(scale);
 }
 
 void Button::set_height(float height) {
-    size.y = height;
+    auto sprite_size = m_sprite.getTexture()->getSize();
+
+    sf::Vector2f scale = {height / sprite_size.y, 
+                            height / sprite_size.y};
+
+    m_sprite.setScale(scale);
 }
 
 void Button::set_size(float width, float height) {
@@ -104,5 +81,12 @@ void Button::set_size(float width, float height) {
 }
 
 void Button::set_size(sf::Vector2f size) {
-    this->size = size;
+    auto sprite_size = m_sprite.getTexture()->getSize();
+
+    sf::Vector2f scale = {size.x / sprite_size.x, 
+                            size.y / sprite_size.y};
+                            
+    if(m_sprite.getScale() != scale) {
+        m_sprite.setScale(scale);
+    }
 }

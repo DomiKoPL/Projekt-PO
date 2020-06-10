@@ -7,7 +7,6 @@ class Button : public sf::Drawable, public sf::Transformable {
 private:
     sf::Texture m_texture, m_highlight_texture;
     sf::Sprite m_sprite;
-    sf::Vector2f size;
     std::function<void()> m_func_when_clicked;
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 public:

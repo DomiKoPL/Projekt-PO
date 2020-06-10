@@ -29,6 +29,11 @@ Game::Game() {
 	Settings::load();
 
 	window.create(sf::VideoMode(Settings::get<unsigned int>("width"), Settings::get<unsigned int>("height")), "Floating Gra", sf::Style::None | sf::Style::Close | sf::Style::Resize);
+
+	//* dzieki View wszedzie zakladamy ze nasze okno ma rozmiar 1920x1080
+	//* uzywamy funkcji window.mapPixelToCoords(point) do zamiany wspolrzednych
+	window.setView(sf::View(sf::FloatRect(0, 0, 1920, 1080)));
+	
 	window.setFramerateLimit(Settings::get<unsigned int>("framerate"));
 	ScreenManager::setup();
 }

@@ -1,7 +1,5 @@
 #pragma once
 #include "BaseScreen.hpp"
-#include "GameScreen.hpp"
-#include "MainMenuScreen.hpp"
 #include <map>
 #include <string>
 

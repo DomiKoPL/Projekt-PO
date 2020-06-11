@@ -4,9 +4,10 @@
 
 class MainMenuScreen : public BaseScreen {
 private:
-    std::vector<std::reference_wrapper<Button>> m_buttons;
     Button play_button;
     Button exit_button;
+    Button options_button;
+    std::vector<std::reference_wrapper<Button>> m_buttons;
 public:
     void draw(sf::RenderWindow& window);
     void update(sf::RenderWindow& window, float elapsed);

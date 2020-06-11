@@ -1,4 +1,8 @@
 #include "ScreenManager.hpp"
+#include "GameScreen.hpp"
+#include "MainMenuScreen.hpp"
+#include "OptionsScreen.hpp"
+#include "../Log.hpp"
 
 void ScreenManager::draw(sf::RenderWindow& window) {
     if(close_window) {
@@ -18,6 +22,7 @@ void ScreenManager::handle_event(sf::RenderWindow& window, sf::Event event) {
 void ScreenManager::setup() {
     screens["GameScreen"] = new GameScreen();
     screens["MainMenuScreen"] = new MainMenuScreen();
+    screens["OptionsScreen"] = new OptionsScreen();
 
     set_screen("MainMenuScreen");
 }
@@ -29,6 +34,9 @@ void ScreenManager::clear() {
 }
 
 void ScreenManager::set_screen(const std::string screen_name) {
+    if(not screens.count(screen_name)) {
+        Log::log(Log::ERROR, "Screen \"{}\" not found!\n", screen_name);
+    }
     current_screen = screens[screen_name];
 }
 

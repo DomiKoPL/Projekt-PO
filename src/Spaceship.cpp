@@ -22,8 +22,7 @@ void Spaceship::set_position(float x, float y) {
 }
 
 void Spaceship::set_position(sf::Vector2f pos) {
-    m_sprite.setPosition(pos);
-    ConvexColliders::set_position(pos);
+    move(pos - m_sprite.getPosition());
 }
 
 void Spaceship::set_origin(float x, float y) {
@@ -35,14 +34,13 @@ void Spaceship::set_origin(sf::Vector2f origin) {
     ConvexColliders::set_origin(origin);
 }
 
-void Spaceship::move_left(float elapsed) {
-    m_sprite.move(-m_move_speed * elapsed, 0);
-    ConvexColliders::move(-m_move_speed * elapsed, 0);
+void Spaceship::move(float x, float y) {
+    move({x, y});
 }
 
-void Spaceship::move_right(float elapsed) {
-    m_sprite.move(m_move_speed * elapsed, 0);
-    ConvexColliders::move(m_move_speed * elapsed, 0);
+void Spaceship::move(sf::Vector2f offset) {
+    m_sprite.move(offset);
+    ConvexColliders::move(offset);
 }
 
 Spaceship::Spaceship() {

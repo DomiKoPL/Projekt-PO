@@ -7,8 +7,7 @@ private:
     sf::Texture m_texture;
     sf::Sprite m_sprite;
     sf::Vector2f m_position;
-    float m_move_speed = 150.f;
-
+    
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 public:
@@ -17,8 +16,8 @@ public:
     void set_position(sf::Vector2f pos);
     void set_origin(float x, float y);
     void set_origin(sf::Vector2f pos);
-    void move_left(float elapsed);
-    void move_right(float elapsed);
+    void move(float x, float y);
+    void move(sf::Vector2f offset);
 
     Spaceship();
 };

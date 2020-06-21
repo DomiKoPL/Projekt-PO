@@ -3,7 +3,7 @@
 #include "colliders/ColliderMaker.hpp"
 
 void Spaceship::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-    Log::log(Log::INFO, "Spaceship draw\n");
+    // Log::log(Log::INFO, "Spaceship draw\n");
     target.draw(m_sprite);
     ConvexColliders::draw(target, states);
 }

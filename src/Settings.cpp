@@ -12,7 +12,7 @@ void Settings::load() {
     std::ifstream dataFile("data/settings.json");
     
     dataFile >> data;
-
+    
     dataFile.close();
     Log::log(Log::INFO, "[DONE] Loading settings.\n");
 }

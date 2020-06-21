@@ -1,5 +1,41 @@
 {
     "framerate": 60,
     "height": 720,
+    "weapons": {
+        "0": {
+            "angles": [
+                0
+            ],
+            "name": "single_shot",
+            "offset": [
+                0
+            ],
+            "shoot_frequency_multiplier": 1.0,
+            "shoot_speed": 1.2,
+            "size": [
+                5,
+                10
+            ],
+            "texture_path": "Resources/Space Shooter - 1/Shoot/1.png"
+        },
+        "1": {
+            "angles": [
+                0,
+                0
+            ],
+            "name": "double shot",
+            "offset": [
+                -6,
+                6
+            ],
+            "shoot_frequency_multiplier": 1.0,
+            "shoot_speed": 1.2,
+            "size": [
+                8,
+                12
+            ],
+            "texture_path": "Resources/Space Shooter - 1/Shoot/2.png"
+        }
+    },
     "width": 1280
 }

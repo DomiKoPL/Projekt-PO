@@ -2,6 +2,7 @@
 #include "screens/ScreenManager.hpp"
 #include "Settings.hpp"
 #include "Log.hpp"
+#include "Weapon.hpp"
 
 void Game::run() {
 	sf::Clock clock;
@@ -35,6 +36,7 @@ Game::Game() {
 	window.setView(sf::View(sf::FloatRect(0, 0, 1920, 1080)));
 	sf::Mouse::setPosition(sf::Vector2i(Settings::get<unsigned int>("width") / 2, Settings::get<unsigned int>("height") / 2), window);
 	window.setFramerateLimit(Settings::get<unsigned int>("framerate"));
+	Weapons::load();
 	ScreenManager::setup();
 }
 

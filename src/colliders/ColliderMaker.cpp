@@ -420,9 +420,6 @@ ConvexColliders* ColliderMaker::make_collider(sf::Image image, unsigned int decr
     for(auto& part : parts) {
         auto triangles = ColliderMaker::hertel_mehlhorn(part);
         for(auto& triangle : triangles) {
-            for(auto& p : triangle) {
-                p *= 8.f;
-            }
             collider->add_collider(triangle, {0, 0}, {0, 0});
         }
     }

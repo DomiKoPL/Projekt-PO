@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
-class ConvexCollider {
+class ConvexCollider : public sf::Drawable {
 private:
     sf::Vector2f position;
     float rotation;
@@ -16,6 +16,8 @@ private:
     int collision;
 
     sf::Color shape_color;
+
+     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 public:
     ConvexCollider();
     ConvexCollider(sf::Vector2f position);
@@ -39,7 +41,6 @@ public:
     void set_origin(sf::Vector2f origin);
     sf::Vector2f get_origin() const;
 
-    void draw(sf::RenderWindow& window) const;
     void reset_color();
     
 protected:

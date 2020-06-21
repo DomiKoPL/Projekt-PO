@@ -18,6 +18,14 @@ void ConvexColliders::add_collider(std::vector<sf::Vector2f> vertices, sf::Vecto
     colliders.push_back(new ConvexCollider(vertices, postion, origin));
 }
 
+void ConvexColliders::add_collider(ConvexCollider* collider) {
+    colliders.push_back(collider);
+}
+
+void ConvexColliders::set_colliders(ConvexColliders* collider) {
+    colliders = collider->colliders;
+}
+
 bool ConvexColliders::is_colliding_with(ConvexCollider& collider) {
     for(auto& coll : this->colliders) {
         if(coll->is_colliding_with(collider)) {
@@ -60,6 +68,10 @@ void ConvexColliders::set_position(sf::Vector2f position) {
     }
 }
 
+void ConvexColliders::move(float x, float y) {
+    move({x, y});
+}
+
 void ConvexColliders::move(sf::Vector2f offset) {
     for(auto& collider : this->colliders) {
         collider->move(offset);
@@ -84,9 +96,9 @@ void ConvexColliders::set_origin(sf::Vector2f origin) {
     }
 }
 
-void ConvexColliders::draw(sf::RenderWindow& window) const {
+void ConvexColliders::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     for(auto& collider : this->colliders) {
-        collider->draw(window);
+        target.draw(*collider);
     }
 }
 

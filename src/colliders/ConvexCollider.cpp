@@ -172,7 +172,7 @@ sf::Vector2f ConvexCollider::get_origin() const {
     return this->origin;
 }   
 
-void ConvexCollider::draw(sf::RenderWindow &window) const {
+void ConvexCollider::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     sf::ConvexShape shape;
 
     shape.setPosition(position);
@@ -192,19 +192,19 @@ void ConvexCollider::draw(sf::RenderWindow &window) const {
         shape.setFillColor(sf::Color::Red);
         circle.setFillColor(sf::Color::Blue);
         // window.draw(circle);
-        window.draw(shape);
+        target.draw(shape);
     } else if(collision == 1) {
         shape.setFillColor(shape_color);
         // shape.setFillColor(sf::Color::Cyan);
         circle.setFillColor(sf::Color::Yellow);
         // window.draw(circle);
-        window.draw(shape);
+        target.draw(shape);
     } else {
         shape.setFillColor(shape_color);
         // shape.setFillColor(sf::Color::Cyan);
         circle.setFillColor(sf::Color::Blue);
         // window.draw(circle);
-        window.draw(shape);
+        target.draw(shape);
     }
 }
 

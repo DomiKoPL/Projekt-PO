@@ -31,16 +31,22 @@ sf::Texture TextGenerator::get_text_texture(const std::string text, uint width) 
             int letter_id = std::tolower(c) - 'a';
             x = character_width * ((7+letter_id)%10);
             y = character_height * ((7+letter_id)/10 + 1);
+        } else {
+            x = character_width;
+            y = character_height;
         }
         
         if(std::tolower(c) == 'm' or std::tolower(c) == 'w') {
-            character.setTextureRect(sf::IntRect(x, y, character_width, character_height));
-            pos.x += width_per_character + 3;
+            character.setTextureRect(sf::IntRect(x + 3, y, character_width - 5, character_height));
+            pos.x += width_per_character - 5;
             std::string x; x += c;
             Log::log(Log::ERROR, "{}\n", x);
+        } else if(std::tolower(c) == 'i' or c == ' '){
+            character.setTextureRect(sf::IntRect(x + 15, y, character_width - 30, character_height));
+            pos.x += width_per_character - 45;
         } else {
             character.setTextureRect(sf::IntRect(x + 9, y, character_width - 18, character_height));
-            pos.x += width_per_character - 18;
+            pos.x += width_per_character - 26;
         }
         texture.draw(character);
         texture.display();

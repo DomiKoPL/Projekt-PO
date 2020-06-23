@@ -42,7 +42,7 @@ GameScreen::GameScreen() {
     auto[tmpx, tmpy] = m_background_texture.getSize();
     m_background_sprite.setScale(1920.f / tmpx, 1080.f / tmpy);
 
-    m_level_texture = TextGenerator::get_text_texture("ABC012MWUV", 37 * 10 * 2);
+    m_level_texture = TextGenerator::get_text_texture("LEVEL 69", 37 * 8 * 2);
     m_level_sprite.setTexture(m_level_texture);
     m_level_sprite.setPosition(100, 200);
 }

@@ -3,6 +3,7 @@
 #include "BaseScreen.hpp"
 #include "../Player.hpp"
 #include "../gui/Button.hpp"
+#include "../levels/LevelManager.hpp"
 
 class GameScreen : public BaseScreen {
 private:
@@ -11,6 +12,8 @@ private:
     sf::Sprite m_background_sprite;
     sf::Texture m_level_texture;
     sf::Sprite m_level_sprite;
+
+    LevelManager m_level_manager;
 public:
     void draw(sf::RenderWindow& window);
     void update(sf::RenderWindow& window, float elapsed);

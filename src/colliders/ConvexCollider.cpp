@@ -40,7 +40,7 @@ std::pair<float, float> ConvexCollider::get_minmax_along(sf::Vector2f vector) co
 
     for (auto vertex : vertices) {
         //* change coordinates to global
-        vertex += position;
+        vertex += position - origin;
         float dot_product = vertex.x * vector.x + vertex.y * vector.y;
         float vertex_cast = dot_product / vector_magnitude;
 
@@ -52,8 +52,8 @@ std::pair<float, float> ConvexCollider::get_minmax_along(sf::Vector2f vector) co
 }
 
 bool ConvexCollider::is_colliding_with(ConvexCollider &collider) {
-    float dx = position.x + centroid.x - (collider.position.x + collider.centroid.x);
-    float dy = position.y + centroid.y - (collider.position.y + collider.centroid.y);
+    float dx = position.x - origin.x + centroid.x - (collider.position.x - collider.origin.x + collider.centroid.x);
+    float dy = position.y - origin.y + centroid.y - (collider.position.y - collider.origin.y + collider.centroid.y);
     if (dx * dx + dy * dy > (radius + collider.radius) * (radius + collider.radius)) {
         return false;
     }
@@ -86,8 +86,8 @@ bool ConvexCollider::is_colliding_with(ConvexCollider &collider) {
 }
 
 bool ConvexCollider::is_colliding_with(ConvexCollider *collider) const {
-    float dx = position.x + centroid.x - (collider->position.x + collider->centroid.x);
-    float dy = position.y + centroid.y - (collider->position.y + collider->centroid.y);
+    float dx = position.x - origin.x + centroid.x - (collider->position.x - collider->origin.x + collider->centroid.x);
+    float dy = position.y - origin.y + centroid.y - (collider->position.y - collider->origin.y + collider->centroid.y);
     if (dx * dx + dy * dy > (radius + collider->radius) * (radius + collider->radius)) {
         return false;
     }
@@ -175,6 +175,7 @@ sf::Vector2f ConvexCollider::get_origin() const {
 void ConvexCollider::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     sf::ConvexShape shape;
 
+    shape.setOrigin(origin);
     shape.setPosition(position);
     shape.setPointCount(vertices.size());
 
@@ -184,8 +185,8 @@ void ConvexCollider::draw(sf::RenderTarget& target, sf::RenderStates states) con
 
     sf::CircleShape circle;
     circle.setRadius(radius);
-    circle.setOrigin({radius, radius});
-    circle.setPosition(position + centroid);
+    circle.setOrigin(origin + sf::Vector2f{radius, radius});
+    circle.setPosition(position + origin + centroid);
 
     if(collision == 2) {
         // shape.setFillColor(shape_color);

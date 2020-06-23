@@ -3,19 +3,22 @@
 #include "Shot.hpp"
 #include <vector>
 #include <map>
+#include <memory>
 
 class Weapon {
 private:
     float m_shoot_frequency_multiplier;
     float m_shoot_speed;
+    uint m_damage;
+    uint m_penetration;
     std::vector<float> m_shoot_angles, m_shoot_offset;
     std::string m_texture_path;
     std::string m_name;
-    sf::Vector2f m_size;
+    float m_size;
 public:
     bool can_shoot(float time_from_last_shot, float shoot_frequency);
-    std::vector<Shot*> shoot();
-    Weapon(float shoot_frequency_multiplier, float shoot_speed, std::vector<float> shoot_angles, std::vector<float> shoot_offset, std::string texture_path, std::string name, sf::Vector2f size);
+    std::vector<std::unique_ptr<Shot>> shoot(sf::Vector2f position);
+    Weapon(float shoot_frequency_multiplier, float shoot_speed, uint damage, uint penetration, std::vector<float> shoot_angles, std::vector<float> shoot_offset, std::string texture_path, std::string name, float size);
 };
 
 

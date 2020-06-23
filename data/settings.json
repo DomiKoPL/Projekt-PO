@@ -6,16 +6,15 @@
             "angles": [
                 0
             ],
+            "damage": 10,
             "name": "single_shot",
             "offset": [
                 0
             ],
-            "shoot_frequency_multiplier": 1.0,
-            "shoot_speed": 1.2,
-            "size": [
-                5,
-                10
-            ],
+            "penetration": 1,
+            "shoot_frequency_multiplier": 2,
+            "shoot_speed": 500,
+            "size": 15,
             "texture_path": "Resources/Space Shooter - 1/Shoot/1.png"
         },
         "1": {
@@ -23,18 +22,72 @@
                 0,
                 0
             ],
+            "damage": 11,
             "name": "double shot",
             "offset": [
-                -6,
-                6
+                -5,
+                5
             ],
-            "shoot_frequency_multiplier": 1.0,
-            "shoot_speed": 1.2,
-            "size": [
-                8,
-                12
-            ],
+            "penetration": 1,
+            "shoot_frequency_multiplier": 2.4,
+            "shoot_speed": 500,
+            "size": 15,
             "texture_path": "Resources/Space Shooter - 1/Shoot/2.png"
+        },
+        "2": {
+            "angles": [
+                -10,
+                0,
+                10
+            ],
+            "damage": 15,
+            "name": "triple shot",
+            "offset": [
+                0,
+                0,
+                0
+            ],
+            "penetration": 1,
+            "shoot_frequency_multiplier": 3,
+            "shoot_speed": 500,
+            "size": 15,
+            "texture_path": "Resources/Space Shooter - 1/Shoot/2.png"
+        },
+        "3": {
+            "angles": [
+                0,
+                0,
+                0,
+                0
+            ],
+            "damage": 20,
+            "name": "quadra shot",
+            "offset": [
+                -24,
+                -8,
+                8,
+                24
+            ],
+            "penetration": 2,
+            "shoot_frequency_multiplier": 12,
+            "shoot_speed": 550,
+            "size": 15,
+            "texture_path": "Resources/Space Shooter - 1/Shoot/3.png"
+        },
+        "8": {
+            "angles": [
+                0
+            ],
+            "damage": 70,
+            "name": "war plasma",
+            "offset": [
+                0
+            ],
+            "penetration": 10,
+            "shoot_frequency_multiplier": 20,
+            "shoot_speed": 700,
+            "size": 50,
+            "texture_path": "Resources/Space Shooter - 1/Shoot/8.png"
         }
     },
     "width": 1280

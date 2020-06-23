@@ -3,10 +3,9 @@
 #include "colliders/ConvexColliders.hpp"
 
 class Spaceship : public sf::Drawable , public ConvexColliders {
-private:
+protected:
     sf::Texture m_texture;
     sf::Sprite m_sprite;
-    sf::Vector2f m_position;
     
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 

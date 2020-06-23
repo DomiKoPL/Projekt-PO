@@ -3,6 +3,7 @@
 #include "Settings.hpp"
 #include "Log.hpp"
 #include "Weapon.hpp"
+#include "gui/TextGenerator.hpp"
 
 void Game::run() {
 	sf::Clock clock;

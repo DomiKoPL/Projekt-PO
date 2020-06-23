@@ -28,7 +28,7 @@ private:
     static void draw(std::vector<std::vector<char>>& img);
     static std::vector<std::vector<sf::Vector2f>> get_parts(std::vector<std::vector<char>>& img);
 public:
-    static ConvexColliders* make_collider(sf::Image image, unsigned int decrease = 3);
+    static ConvexColliders* make_collider(sf::Image image, unsigned int decrease = 3, sf::Vector2f scale = {1.f, 1.f});
 };
 
 // Hertel-Mehlhorn algorithm

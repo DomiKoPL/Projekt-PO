@@ -392,7 +392,7 @@ std::vector<std::vector<sf::Vector2f>> ColliderMaker::get_parts(std::vector<std:
     return parts;
 }
 
-ConvexColliders* ColliderMaker::make_collider(sf::Image image, unsigned int decrease) {
+ConvexColliders* ColliderMaker::make_collider(sf::Image image, unsigned int decrease, sf::Vector2f scale) {
     auto[w, h] = image.getSize();
     std::vector<std::vector<char>> img(h, std::vector<char>(w));
 
@@ -420,6 +420,10 @@ ConvexColliders* ColliderMaker::make_collider(sf::Image image, unsigned int decr
     for(auto& part : parts) {
         auto triangles = ColliderMaker::hertel_mehlhorn(part);
         for(auto& triangle : triangles) {
+            for(auto& p : triangle) {
+                p.x *= scale.x;
+                p.y *= scale.y;
+            }
             collider->add_collider(triangle, {0, 0}, {0, 0});
         }
     }

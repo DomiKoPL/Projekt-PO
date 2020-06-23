@@ -22,6 +22,12 @@ void MainMenuScreen::handle_event(sf::RenderWindow& window, sf::Event event) {
     for(auto& button : m_buttons) {
         button.get().update(window, event);
     }
+
+    if(event.type == sf::Event::KeyPressed) {
+        if(event.key.code == sf::Keyboard::Space) {
+            ScreenManager::set_screen("GameScreen");
+        }
+    }
 }
 
 MainMenuScreen::MainMenuScreen() {

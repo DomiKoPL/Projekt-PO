@@ -7,7 +7,9 @@ TARGET := gra
 SRCS := $(wildcard src/*.cpp)\
 		$(wildcard src/screens/*.cpp)\
 		$(wildcard src/gui/*.cpp)\
-		$(wildcard src/colliders/*.cpp)
+		$(wildcard src/colliders/*.cpp)\
+		$(wildcard src/enemies/*.cpp)\
+		$(wildcard src/levels/*.cpp)
 
 #* tutaj trzeba dopisac foldery tak jak w przykladzie nizej
 # SRCS := $(wildcard src/*.cpp) \
@@ -33,6 +35,12 @@ obj/%.o: src/gui/%.cpp src/gui/%.hpp
 	$(CC) $(FLAGS) -c $< -o $(addprefix obj/, $(notdir $(patsubst %.cpp,%.o,$<)))
 
 obj/%.o: src/colliders/%.cpp src/colliders/%.hpp
+	$(CC) $(FLAGS) -c $< -o $(addprefix obj/, $(notdir $(patsubst %.cpp,%.o,$<)))
+
+obj/%.o: src/enemies/%.cpp src/enemies/%.hpp
+	$(CC) $(FLAGS) -c $< -o $(addprefix obj/, $(notdir $(patsubst %.cpp,%.o,$<)))
+
+obj/%.o: src/levels/%.cpp src/levels/%.hpp
 	$(CC) $(FLAGS) -c $< -o $(addprefix obj/, $(notdir $(patsubst %.cpp,%.o,$<)))
 
 #* jezeli zostal dodany nowy folder to trzeba dla niego stworzyc zasade

@@ -5,6 +5,8 @@
 #include "../Log.hpp"
 
 void GameScreen::draw(sf::RenderWindow& window) {
+    // m_level_manager.draw(window);
+    
     window.draw(m_background_sprite);
     // Log::log(Log::INFO, "DRAW GAME\n");
     // m_player.draw_collider(window);
@@ -14,6 +16,8 @@ void GameScreen::draw(sf::RenderWindow& window) {
 
 void GameScreen::update(sf::RenderWindow& window, float elapsed) {
     // Log::log(Log::INFO, "UPDATE GAME {} \n", 1.0 / elapsed);
+    // m_level_manager.update(m_player, elapsed);
+
     m_player.update(elapsed);
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) or sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
@@ -34,6 +38,8 @@ void GameScreen::handle_event(sf::RenderWindow& window, sf::Event event) {
 }
 
 GameScreen::GameScreen() {
+    // m_level_manager.load();
+
     m_player.set_texture("Resources/Space Shooter - 1/Ship/2.png");
     m_player.set_position(1920.f / 2, 1080.f - 80.f);
 

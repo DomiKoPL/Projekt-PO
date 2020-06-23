@@ -21,7 +21,7 @@ OBJ := $(addprefix obj/, $(notdir $(patsubst %.cpp,%.o,$(SRCS))))
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
-	$(CC) $(FLAGS) $(SFML_LIBS) -o $@ $(OBJ)
+	$(CC) $(OBJ) $(FLAGS) $(SFML_LIBS) -o $@
 
 obj/%.o: src/%.cpp src/%.hpp
 	$(CC) $(FLAGS) -c $< -o $(addprefix obj/, $(notdir $(patsubst %.cpp,%.o,$<)))

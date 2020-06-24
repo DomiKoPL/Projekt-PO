@@ -77,8 +77,8 @@ void LevelManager::load() {
         m_levels[std::stoi(level_name)] = std::make_shared<Level>(std::to_string(lvl), enemies);
     }
 
-    m_current_level = m_levels[1];
-    m_current_level_number = 1;
+    m_current_level = m_levels[Settings::get<int>("start_level")];
+    m_current_level_number = Settings::get<int>("start_level");
 }
 
 LevelManager::LevelManager()

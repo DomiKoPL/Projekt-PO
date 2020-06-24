@@ -175,14 +175,14 @@ void BaseEnemy::move_random_down(float elapsed) {
     move(dx, random(0.8f, 1.f) * elapsed * m_speed);
 }
 
-BaseEnemy::BaseEnemy(std::vector<sf::Vector2f> goals, float time_offset, float speed, uint hp, const std::string texture_path) 
+BaseEnemy::BaseEnemy(std::vector<sf::Vector2f> goals, float time_offset, float speed, float start_rotation, uint hp, const std::string texture_path) 
     :   m_goals{goals}, 
         m_current_goal{1}, 
         m_time_offset{time_offset}, 
         m_current_time{0}, 
         m_speed{speed}, 
         m_hp{hp},
-        m_rotation{90},
+        m_rotation{start_rotation},
         m_path_end{false}, 
         m_random_goal_x{-10}
     {

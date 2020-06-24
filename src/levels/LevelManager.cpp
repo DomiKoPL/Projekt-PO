@@ -58,6 +58,7 @@ void LevelManager::load() {
             auto x = enemy.at("X").get<std::vector<float>>();
             auto y = enemy.at("Y").get<std::vector<float>>();
             auto count = enemy.at("count").get<uint>();
+            auto start_rotation = enemy.at("start_rotation").get<uint>();
 
             std::vector<sf::Vector2f> goals(x.size());
             for(uint i = 0; i < x.size(); i++) {
@@ -76,7 +77,7 @@ void LevelManager::load() {
                     goals.push_back(*it);
                     formation.erase(it);
                     enemy_id++;
-                    enemies.emplace_back(new SmallEnemy(goals, time_offset_start + time_offset * i, speed, m_times_played * enemy_hp, texture_path));
+                    enemies.emplace_back(new SmallEnemy(goals, time_offset_start + time_offset * i, speed, start_rotation, m_times_played * enemy_hp, texture_path));
                     goals.pop_back();
                 }
             }

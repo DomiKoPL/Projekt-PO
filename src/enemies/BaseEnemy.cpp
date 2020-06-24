@@ -23,7 +23,10 @@ void BaseEnemy::update(Player& player, float elapsed) {
         auto[nx, ny] = m_goals[m_current_goal];
         // Log::log(Log::INFO, "Pos = ({}, {}), goal = ({}, {})\n", x, y, nx, ny);
         float dist_to_target = std::sqrt((x - nx) * (x - nx) + (y - ny) * (y - ny));
-        
+        float good_dist = 20.f;
+        if(m_current_goal + 1 == m_goals.size()) {
+            good_dist = 0.f; 
+        }
         if(dist_to_target <= 20.f) {
             // Log::log(Log::INFO, "Next goal!\n");
             m_current_goal++;
@@ -42,6 +45,12 @@ void BaseEnemy::update(Player& player, float elapsed) {
             }
             
             float angle_change_per_second = 45.f;
+            float speed_boost = 1.0;
+            if(m_current_goal + 1 == m_goals.size()) {
+                angle_change_per_second = 1000;
+                speed_boost *= 3;
+            }
+
             if(angle_change > elapsed * angle_change_per_second) angle_change = elapsed * angle_change_per_second;
             if(angle_change < -elapsed * angle_change_per_second) angle_change = -elapsed * angle_change_per_second;
             // Log::log(Log::INFO, "cur = {} ang = {}, change = {}\n", m_rotation, angle, angle_change);
@@ -49,9 +58,29 @@ void BaseEnemy::update(Player& player, float elapsed) {
             set_rotation(m_rotation + 90);
             // Log::log(Log::INFO, "move vector = ({}, {})\n", m_speed * elapsed * std::cos(angle_rad), m_speed * elapsed * std::sin(angle_rad));
             float dangle = m_rotation * M_PI / 180;
-            move(m_speed * elapsed * std::cos(dangle),
-                    m_speed * elapsed * std::sin(dangle));
+            move(speed_boost * m_speed * elapsed * std::cos(dangle),
+                    speed_boost * m_speed * elapsed * std::sin(dangle));
         }
+    } else {
+        auto angle = -90;
+        while(angle < 0) angle += 360.0;
+        while(m_rotation < 0) m_rotation += 360.0;
+        while(angle >= 360.0) angle -= 360.0;
+        while(m_rotation >= 360.0) m_rotation -= 360.0;
+
+        auto angle_change = angle - m_rotation;
+        if(angle_change > 180.0) {
+            angle_change -= 360.0;
+        } else if(angle_change <= -180.0) {
+            angle_change += 360.0;
+        }
+        
+        float angle_change_per_second = 45.f * 4;
+        if(angle_change > elapsed * angle_change_per_second) angle_change = elapsed * angle_change_per_second;
+        if(angle_change < -elapsed * angle_change_per_second) angle_change = -elapsed * angle_change_per_second;
+        // Log::log(Log::INFO, "cur = {} ang = {}, change = {}\n", m_rotation, angle, angle_change);
+        m_rotation += angle_change;
+        set_rotation(m_rotation + 90);
     }
 }
 
@@ -69,8 +98,20 @@ bool BaseEnemy::is_dead() const {
     return m_hp == 0;
 }
 
+bool BaseEnemy::path_end() const {
+    return (std::abs(m_rotation - 270.f) < 0.001f and m_current_goal == m_goals.size());
+}
+
 void BaseEnemy::deal_dmg(uint dmg) {
     m_hp -= std::min(m_hp, dmg);
+}
+
+void BaseEnemy::move_right(float elapsed) {
+    move(m_speed * elapsed * 0.3f, 0);
+}
+
+void BaseEnemy::move_left(float elapsed) {
+    move(-m_speed * elapsed * 0.3f, 0);
 }
 
 BaseEnemy::BaseEnemy(std::vector<sf::Vector2f> goals, float time_offset, float speed, uint hp, const std::string texture_path) 

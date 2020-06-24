@@ -9,9 +9,34 @@ void Level::draw(sf::RenderWindow& window) {
         window.draw(*enemy);
     }
 }
+#include "../Log.hpp"
 
 void Level::update(Player& player, float elapsed) {
     m_current_time += elapsed;
+
+    uint path_ends = 0;
+    for(auto& enemy : m_enemies) {
+        path_ends += enemy->path_end();
+    }
+
+    Log::log(Log::INFO, "xd = {}\n", path_ends);
+    if(path_ends == m_enemies.size()) {
+
+        cnt_time -= elapsed;
+
+        if(cnt_time < 0) {
+            dir = 1 - dir;
+            cnt_time = 1.5f;
+        }
+
+        for(auto& enemy : m_enemies) {
+            if(dir == 1) {
+                enemy->move_left(elapsed);
+            } else {
+                enemy->move_right(elapsed);
+            }
+        }
+    }
 
     for(auto& enemy : m_enemies) {
         enemy->update(player, elapsed);

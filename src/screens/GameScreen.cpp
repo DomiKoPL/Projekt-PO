@@ -3,6 +3,7 @@
 #include "ScreenManager.hpp"
 #include "../gui/TextGenerator.hpp"
 #include "../Log.hpp"
+#include "../TextureManager.hpp"
 
 void GameScreen::draw(sf::RenderWindow& window) {
     window.draw(m_background_sprite);
@@ -12,6 +13,14 @@ void GameScreen::draw(sf::RenderWindow& window) {
     // m_player.draw_collider(window);
     window.draw(m_player);
     window.draw(m_level_sprite);
+
+    // HUD
+
+    int player_life = m_player.get_life();
+    for(int i = 0; i < player_life; i++) {
+        m_player_life_sprite.setPosition(20 + i * 40, 40);
+        window.draw(m_player_life_sprite);
+    }
 }
 
 void GameScreen::update(sf::RenderWindow& window, float elapsed) {
@@ -57,4 +66,8 @@ GameScreen::GameScreen() {
     m_background_sprite.setTexture(m_background_texture);
     auto[tmpx, tmpy] = m_background_texture.getSize();
     m_background_sprite.setScale(1920.f / tmpx, 1080.f / tmpy);
+
+    m_player_life_sprite.setTexture(TextureManager::instance().get_texture("Resources/Space Shooter - 1/HUD/LifeIcon.png"));
+    auto[w, h] = TextureManager::instance().get_texture("Resources/Space Shooter - 1/HUD/LifeIcon.png").getSize();
+    m_player_life_sprite.setScale(40.f / w, 40.f / w);
 }

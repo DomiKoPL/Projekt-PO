@@ -22,7 +22,7 @@ void BaseEnemy::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 }
 
 
-void BaseEnemy::update(Player& player, float elapsed) {
+void BaseEnemy::update(Player& player [[maybe_unused]], float elapsed) {
     m_current_time += elapsed;
 
     if(m_current_time < m_time_offset) {
@@ -37,9 +37,10 @@ void BaseEnemy::update(Player& player, float elapsed) {
         float dist_to_target = std::sqrt((x - nx) * (x - nx) + (y - ny) * (y - ny));
         float good_dist = 20.f;
         if(m_current_goal + 1 == m_goals.size()) {
-            good_dist = 0.f; 
+            good_dist = 15.f; 
         }
-        if(dist_to_target <= 20.f) {
+
+        if(dist_to_target <= good_dist) {
             // Log::log(Log::INFO, "Next goal!\n");
             m_current_goal++;
         } else {
@@ -59,7 +60,7 @@ void BaseEnemy::update(Player& player, float elapsed) {
             float angle_change_per_second = 45.f;
             float speed_boost = 1.0;
             if(m_current_goal + 1 == m_goals.size()) {
-                angle_change_per_second = 1000;
+                angle_change_per_second = 4000;
                 speed_boost *= 3;
             }
 
@@ -180,8 +181,8 @@ void BaseEnemy::move_random_down(float elapsed) {
 BaseEnemy::BaseEnemy(std::vector<sf::Vector2f> goals, float time_offset, float speed, float start_rotation, uint hp, const std::string texture_path) 
     :   m_goals{goals}, 
         m_current_goal{1}, 
-        m_time_offset{time_offset}, 
         m_current_time{0}, 
+        m_time_offset{time_offset}, 
         m_speed{speed}, 
         m_hp{hp},
         m_rotation{start_rotation},

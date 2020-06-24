@@ -34,7 +34,6 @@ std::vector<std::unique_ptr<Shot>>& Player::get_shots() {
     return m_shots;
 }
 
-
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     for (auto& shot : m_shots) {
         target.draw(*shot, states);
@@ -49,6 +48,12 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 void Player::update(float elapsed) {
     m_time_from_last_shot += elapsed;
     m_shield_time -= std::min(m_shield_time, elapsed);
+
+    if(m_shield_time > 0) {
+        auto c = m_shield.getColor();
+        c.a = std::min(1.5f, m_shield_time) * (100 / 1.5f) + 60;
+        m_shield.setColor(c);
+    }
 
     m_shield.setPosition(m_sprite.getPosition());
 
@@ -86,6 +91,10 @@ void Player::hit() {
     }
 }
 
+int Player::get_life() const {
+    return m_life;
+}
+
 void Player::give_shield(float shield_time) {
     m_shield_time += shield_time;
 }
@@ -99,7 +108,7 @@ Player::Player() {
     m_shoot_frequency = 0.5f;
     m_time_from_last_shot = 100.f;
     m_weapon = Weapons::get_weapon("0");
-    m_shield_time = 0;
+    m_shield_time = 5;
     m_life = 3;
     m_shield.setTexture(TextureManager::instance().get_texture("Resources/Space Shooter - 1/Fx/Shield.png"));
     auto c = m_shield.getColor();

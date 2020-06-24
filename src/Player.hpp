@@ -22,6 +22,7 @@ public:
     std::vector<std::unique_ptr<Shot>>& get_shots();
     void update(float elapsed);
     void hit();
+    int get_life() const;
     void give_shield(float shield_time);
     bool is_dead() const;
     

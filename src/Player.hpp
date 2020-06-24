@@ -11,6 +11,9 @@ private:
     float m_move_speed = 2000.f;
     float m_shoot_frequency = 0.5f;
     float m_time_from_last_shot;
+    float m_shield_time;
+    int m_life;
+    sf::Sprite m_shield;
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 public:
     void move_left(float elapsed);
@@ -19,6 +22,7 @@ public:
     std::vector<std::unique_ptr<Shot>>& get_shots();
     void update(float elapsed);
     void hit();
+    void give_shield(float shield_time);
     bool is_dead() const;
     
     Player();

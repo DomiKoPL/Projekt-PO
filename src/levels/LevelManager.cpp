@@ -65,6 +65,7 @@ void LevelManager::load() {
             decltype(formation_temp) form;
 
             uint roz_size = 8;
+            //! pattern from "levels_formation" in settings.json
             while(form.size() < cnt) {
                 uint roz = form.size() + roz_size;
                 roz_size = 15 - roz_size;

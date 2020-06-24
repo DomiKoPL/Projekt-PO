@@ -104,7 +104,7 @@ Level::Level(const std::string name, std::vector<std::shared_ptr<BaseEnemy>> ene
       m_enemies{enemies},
       m_current_time{0}
     {
-    m_level_texture = TextGenerator::get_text_texture("LEVEL " + name, 37 * (6 + name.size()));
+    m_level_texture = TextGenerator::get_text_texture("LEVEL " + name, 1.8 * 37 * (6 + name.size()));
     m_level_sprite.setTexture(m_level_texture);
-    m_level_sprite.setPosition(1920.f / 2 - m_level_texture.getSize().x / 2, 90);
+    m_level_sprite.setPosition(1920.f / 2 - m_level_texture.getSize().x / 2, 130);
 }

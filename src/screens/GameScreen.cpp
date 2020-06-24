@@ -30,6 +30,11 @@ void GameScreen::update(sf::RenderWindow& window, float elapsed) {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
         m_player.shoot();
     }
+    
+
+    if(m_player.is_dead()) {
+        Log::log(Log::INFO, "DEAD :(((\n");
+    }
 }
 
 void GameScreen::handle_event(sf::RenderWindow& window, sf::Event event) {
@@ -40,7 +45,7 @@ GameScreen::GameScreen() {
     m_level_manager.load();
 
     m_player.set_texture("Resources/Space Shooter - 1/Ship/2.png");
-    m_player.set_position(1920.f / 2, 1080.f - 80.f);
+    m_player.set_position(1920.f / 2, 1080.f - 40.f);
 
     m_background_texture.loadFromFile("Resources/Space Shooter - 1/Background/1.png");
     m_background_sprite.setTexture(m_background_texture);

@@ -16,11 +16,11 @@ void Spaceship::set_texture(const std::string path) {
     m_sprite.setTexture(m_texture);
     float scale = 60.f / m_texture.getSize().x;
     auto[width, height] = m_texture.getSize();
-    m_sprite.setOrigin(width / 2, 0);
+    m_sprite.setOrigin(width / 2, height / 2);
     m_sprite.setScale(scale, scale);
     
     ConvexColliders::set_colliders(ColliderMaker::make_collider(m_texture.copyToImage(), 2, {scale, scale}));
-    ConvexColliders::set_origin(sf::Vector2f{width / 2.f, 0.f} * scale);
+    ConvexColliders::set_origin(sf::Vector2f{width / 2.f, height / 2.f} * scale);
 }
 
 void Spaceship::set_position(float x, float y) {

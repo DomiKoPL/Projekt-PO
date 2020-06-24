@@ -13,6 +13,8 @@ private:
     sf::Texture m_level_texture;
     sf::Sprite m_level_sprite;
 
+    float m_background_move_speed = 10.f;
+    float m_background_current_y = 0.f;
     LevelManager m_level_manager;
 public:
     void draw(sf::RenderWindow& window);

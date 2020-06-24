@@ -8,14 +8,15 @@ void BaseEnemy::draw(sf::RenderTarget& target, sf::RenderStates states) const {
         return;
     }
 
-    for(uint i = 0; i + 1 < m_goals.size(); i++) {
-        sf::CircleShape circle;
-        circle.setRadius(8);
-        circle.setOrigin(4, 4);
-        circle.setFillColor(sf::Color::Red);
-        circle.setPosition(m_goals[i]);
-        target.draw(circle, states);
-    }
+    //* drawing red dots
+    // for(uint i = 0; i + 1 < m_goals.size(); i++) {
+    //     sf::CircleShape circle;
+    //     circle.setRadius(8);
+    //     circle.setOrigin(4, 4);
+    //     circle.setFillColor(sf::Color::Red);
+    //     circle.setPosition(m_goals[i]);
+    //     target.draw(circle, states);
+    // }
 
     Spaceship::draw(target, states);
 }

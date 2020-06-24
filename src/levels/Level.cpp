@@ -30,7 +30,7 @@ void Level::update(Player& player, float elapsed) {
 
             if(cnt_time < 0) {
                 dir = 1 - dir;
-                cnt_time = 1.5f;
+                cnt_time = 2.0f;
             }
 
             for(auto& enemy : m_enemies) {

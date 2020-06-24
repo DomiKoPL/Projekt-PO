@@ -15,7 +15,7 @@ private:
     float m_current_time;
 
     int dir = 1;
-    float cnt_time = 1.5f;
+    float cnt_time = 1.0f;
 
 public:
     void draw(sf::RenderWindow &window);

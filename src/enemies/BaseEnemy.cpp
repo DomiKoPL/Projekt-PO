@@ -8,11 +8,12 @@ void BaseEnemy::draw(sf::RenderTarget& target, sf::RenderStates states) const {
         return;
     }
 
-    for(auto& [x, y] : m_goals) {
+    for(uint i = 0; i + 1 < m_goals.size(); i++) {
         sf::CircleShape circle;
-        circle.setRadius(10);
+        circle.setRadius(8);
+        circle.setOrigin(4, 4);
         circle.setFillColor(sf::Color::Red);
-        circle.setPosition(x, y);
+        circle.setPosition(m_goals[i]);
         target.draw(circle, states);
     }
 

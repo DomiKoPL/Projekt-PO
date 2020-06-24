@@ -32,14 +32,16 @@ void LevelManager::load() {
     auto formation_json = Settings::get<nlohmann::json>("levels_formation");
     auto X = formation_json.at("X").get<std::vector<float>>();
     auto Y = formation_json.at("Y").get<std::vector<float>>();
-    std::vector<sf::Vector2f> formation(X.size());
+    std::vector<sf::Vector2f> formation_temp(X.size());
     for(uint i = 0; i < X.size(); i++) {
-        formation[i] = {X[i], Y[i]};
+        formation_temp[i] = {X[i], Y[i]};
     }
+    
 
     auto levels = Settings::get<nlohmann::json>("levels");
     for(auto& [level_name, args] : levels.items()) {
         Log::log(Log::INFO, "name = {}\n", level_name);
+        auto formation = formation_temp;
         auto enemy_hp = args.at("enemy_hp").get<uint>();
         auto texture_path = args.at("enemy_texture_path").get<std::string>();
 
@@ -64,7 +66,15 @@ void LevelManager::load() {
 
             if(type == "small") {
                 for(uint i = 0; i < count; i++) {
-                    goals.push_back(formation[enemy_id]);
+                    auto last_pos = goals.back();
+                    auto it = std::min_element(formation.begin(), formation.end(), [last_pos](auto p1, auto p2) {
+                        auto d = [last_pos](auto p) {
+                            return (p.x - last_pos.x) * (p.x - last_pos.x) + (p.y - last_pos.y) * (p.y - last_pos.y);
+                        };
+                        return d(p1) < d(p2);
+                    });
+                    goals.push_back(*it);
+                    formation.erase(it);
                     enemy_id++;
                     enemies.emplace_back(new SmallEnemy(goals, time_offset_start + time_offset * i, speed, m_times_played * enemy_hp, texture_path));
                     goals.pop_back();

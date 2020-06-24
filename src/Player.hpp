@@ -18,6 +18,8 @@ public:
     void shoot();
     std::vector<std::unique_ptr<Shot>>& get_shots();
     void update(float elapsed);
+    void hit();
+    bool is_dead() const;
     
     Player();
 };

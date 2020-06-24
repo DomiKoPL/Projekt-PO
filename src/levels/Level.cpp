@@ -4,6 +4,10 @@ void Level::draw(sf::RenderWindow& window) {
     if(m_current_time <= 5.5) {
         window.draw(m_level_sprite);
     }
+
+    for(auto& shot : m_shots) {
+        window.draw(*shot);
+    }
     
     for(auto& enemy : m_enemies) {
         window.draw(*enemy);
@@ -12,6 +16,10 @@ void Level::draw(sf::RenderWindow& window) {
 #include "../Log.hpp"
 
 void Level::update(Player& player, float elapsed) {
+    for(auto& shot : m_shots) {
+        shot->update(elapsed);
+    }
+    
     m_current_time += elapsed;
 
     uint path_ends = 0;
@@ -45,22 +53,42 @@ void Level::update(Player& player, float elapsed) {
 
     for(auto& enemy : m_enemies) {
         enemy->update(player, elapsed);
+        auto shots = enemy->shot(player, elapsed);
+        for(auto& shot : shots) {
+            m_shots.push_back(std::move(shot));
+        }
     }
     
-    auto& shots = player.get_shots();
+    auto& player_shots = player.get_shots();
     for(auto& enemy : m_enemies) {
         if(enemy->is_visible()) {
-            for(auto& shot : shots) {
+            for(auto& shot : player_shots) {
                 if(enemy->is_colliding_with(*shot)) {
                     enemy->deal_dmg(shot->get_damage());
                     shot->shot();
                 }
             }
-            shots.erase(std::remove_if(shots.begin(), shots.end(), [](auto& shot) {
+            player_shots.erase(std::remove_if(player_shots.begin(), player_shots.end(), [](auto& shot) {
                 return shot->is_dead();
-            }), shots.end());
+            }), player_shots.end());
+        }
+
+        if(enemy->is_colliding_with(player)) {
+            player.hit();
         }
     }
+
+    for(auto& shot : m_shots) {
+        if(shot->is_colliding_with(player)) {
+            player.hit();
+            shot->shot();
+        }
+    }
+
+    m_shots.erase(std::remove_if(m_shots.begin(), m_shots.end(), [](auto& shot) {
+        return shot->is_dead();
+    }), m_shots.end());
+
 
     m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [](auto& enemy) {
         return enemy->is_dead();

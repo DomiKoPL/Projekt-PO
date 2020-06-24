@@ -13,7 +13,8 @@ private:
     std::string n_name;
     std::vector<std::shared_ptr<BaseEnemy>> m_enemies;
     float m_current_time;
-
+    
+    std::vector<std::unique_ptr<Shot>> m_shots;
     int dir = 1;
     float cnt_time = 1.0f;
 

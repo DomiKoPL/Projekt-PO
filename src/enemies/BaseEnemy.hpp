@@ -2,9 +2,10 @@
 
 #include "../Spaceship.hpp"
 #include "../Player.hpp"
+#include "../Shot.hpp"
 
 class BaseEnemy : public Spaceship {
-private:
+protected:
     std::vector<sf::Vector2f> m_goals;
     uint m_current_goal;
     float m_current_time;
@@ -13,10 +14,10 @@ private:
     uint m_hp;
     float m_rotation;
     bool m_path_end;
-
     float m_random_goal_x;
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 public:
+    virtual std::vector<std::unique_ptr<Shot>> shot(Player& player, float elapsed) = 0;
     void update(Player& player, float elapsed);
     bool is_visible() const;
     bool is_dead() const;

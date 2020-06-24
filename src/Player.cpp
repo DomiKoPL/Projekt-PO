@@ -59,6 +59,14 @@ void Player::update(float elapsed) {
     }
 }
 
+void Player::hit() {
+    Log::log(Log::INFO, "PLAYER HIT\n");
+}
+
+bool Player::is_dead() const {
+    return false;
+}
+
 Player::Player() {
     m_move_speed = 2000.f;
     m_shoot_frequency = 0.5f;

@@ -20,6 +20,7 @@ void BaseEnemy::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     Spaceship::draw(target, states);
 }
 
+
 void BaseEnemy::update(Player& player, float elapsed) {
     m_current_time += elapsed;
 
@@ -125,7 +126,7 @@ void BaseEnemy::move_left(float elapsed) {
     move(-m_speed * elapsed * 0.3f, 0);
 }
 
-thread_local std::mt19937 gen{std::random_device{}()};
+std::mt19937 gen{std::random_device{}()};
 template <typename T>
 T random(T min, T max) {
     using dist = std::conditional_t<std::is_integral<T>::value, 

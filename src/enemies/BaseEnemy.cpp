@@ -1,12 +1,21 @@
 #include "BaseEnemy.hpp"
 #include <math.h>
 #include "../Log.hpp"
-
+#include <random>
 
 void BaseEnemy::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     if(m_current_time < m_time_offset) {
         return;
     }
+
+    for(auto& [x, y] : m_goals) {
+        sf::CircleShape circle;
+        circle.setRadius(10);
+        circle.setFillColor(sf::Color::Red);
+        circle.setPosition(x, y);
+        target.draw(circle, states);
+    }
+
     Spaceship::draw(target, states);
 }
 
@@ -98,8 +107,9 @@ bool BaseEnemy::is_dead() const {
     return m_hp == 0;
 }
 
-bool BaseEnemy::path_end() const {
-    return (std::abs(m_rotation - 270.f) < 0.001f and m_current_goal == m_goals.size());
+bool BaseEnemy::path_end() {
+    if(m_path_end) return true;
+    return m_path_end = (std::abs(m_rotation - 270.f) < 0.001f and m_current_goal == m_goals.size());
 }
 
 void BaseEnemy::deal_dmg(uint dmg) {
@@ -114,6 +124,56 @@ void BaseEnemy::move_left(float elapsed) {
     move(-m_speed * elapsed * 0.3f, 0);
 }
 
+thread_local std::mt19937 gen{std::random_device{}()};
+template <typename T>
+T random(T min, T max) {
+    using dist = std::conditional_t<std::is_integral<T>::value, 
+                    std::uniform_int_distribution<T>, 
+                    std::uniform_real_distribution<T>>;
+    return dist{min, max}(gen);
+}
+	
+
+void BaseEnemy::move_random_down(float elapsed) {
+    if(m_sprite.getPosition().y > 1180) {
+        set_position(m_sprite.getPosition().x, -100);
+
+        float dx = random(50.f, 300.f);
+        if(random(0.f, 1.f) < 0.5f) {
+            dx = -dx;
+        }
+        m_random_goal_x = m_sprite.getPosition().x + dx;
+        return;
+    }
+
+    if(m_sprite.getPosition().x < -50) {
+        set_position(1920 + 50, m_sprite.getPosition().y);
+    }
+
+    if(m_sprite.getPosition().x > 1920 + 50) {
+        set_position(-50, m_sprite.getPosition().y);
+    }
+
+    if(m_random_goal_x < 0 or abs(m_random_goal_x - m_sprite.getPosition().x) < 0.5) {
+        float dx = random(50.f, 300.f);
+        if(random(0.f, 1.f) < 0.5f) {
+            dx = -dx;
+        }
+        m_random_goal_x = m_sprite.getPosition().x + dx;
+    }
+
+    float dx = m_random_goal_x - m_sprite.getPosition().x;
+    if(dx < 0) {
+        dx = -dx;
+        dx = std::min(dx, elapsed * m_speed);
+        dx = -dx;
+    } else {
+        dx = std::min(dx, elapsed * m_speed);
+    }
+    
+    move(dx, random(0.8f, 1.f) * elapsed * m_speed);
+}
+
 BaseEnemy::BaseEnemy(std::vector<sf::Vector2f> goals, float time_offset, float speed, uint hp, const std::string texture_path) 
     :   m_goals{goals}, 
         m_current_goal{1}, 
@@ -121,7 +181,9 @@ BaseEnemy::BaseEnemy(std::vector<sf::Vector2f> goals, float time_offset, float s
         m_current_time{0}, 
         m_speed{speed}, 
         m_hp{hp},
-        m_rotation{90}
+        m_rotation{90},
+        m_path_end{false}, 
+        m_random_goal_x{-10}
     {
     set_texture(texture_path);
     set_position(goals.at(0));

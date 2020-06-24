@@ -19,21 +19,26 @@ void Level::update(Player& player, float elapsed) {
         path_ends += enemy->path_end();
     }
 
-    Log::log(Log::INFO, "xd = {}\n", path_ends);
+    // Log::log(Log::INFO, "xd = {}\n", path_ends);
     if(path_ends == m_enemies.size()) {
+        if(m_enemies.size() <= 5u) {
+            for(auto& enemy : m_enemies) {
+                enemy->move_random_down(elapsed);
+            }
+        } else {
+            cnt_time -= elapsed;
 
-        cnt_time -= elapsed;
+            if(cnt_time < 0) {
+                dir = 1 - dir;
+                cnt_time = 1.5f;
+            }
 
-        if(cnt_time < 0) {
-            dir = 1 - dir;
-            cnt_time = 1.5f;
-        }
-
-        for(auto& enemy : m_enemies) {
-            if(dir == 1) {
-                enemy->move_left(elapsed);
-            } else {
-                enemy->move_right(elapsed);
+            for(auto& enemy : m_enemies) {
+                if(dir == 1) {
+                    enemy->move_left(elapsed);
+                } else {
+                    enemy->move_right(elapsed);
+                }
             }
         }
     }

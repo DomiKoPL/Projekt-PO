@@ -17,6 +17,6 @@ public:
     void update(float elapsed);
     uint get_damage() const;
     bool is_dead() const;
-
+    void shot();
     Shot(float angle, float speed, uint damage, uint penetration, std::string texture_path, sf::Vector2f pos, float size);
 };

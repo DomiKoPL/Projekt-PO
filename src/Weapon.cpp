@@ -8,7 +8,7 @@ bool Weapon::can_shoot(float time_from_last_shot, float shoot_frequency) {
 }
 
 std::vector<std::unique_ptr<Shot>> Weapon::shoot(sf::Vector2f position) {
-    Log::log(Log::INFO, "{}\n", m_name);
+    // Log::log(Log::INFO, "{}\n", m_name);
     std::vector<std::unique_ptr<Shot>> shots;
     for(uint i = 0; i < m_shoot_angles.size(); i++) {
         shots.emplace_back(new Shot(m_shoot_angles[i], m_shoot_speed, m_damage, m_penetration, m_texture_path, position + sf::Vector2f(m_shoot_offset[i], 0.f), m_size));
@@ -35,11 +35,9 @@ Weapon* Weapons::get_weapon(const std::string name) {
     return m_weapons[name];
 }
 
-#include <iostream>
 void Weapons::load() {
     auto weapons = Settings::get<nlohmann::json>("weapons");
     for(auto& [name, args] : weapons.items()) {
-        std::cout << name << "\n";
         m_weapons[name] = new Weapon((float)args["shoot_frequency_multiplier"], (float)args["shoot_speed"], args.at("damage").get<uint>(),args.at("penetration").get<uint>(), args.at("angles").get<std::vector<float>>(), args.at("offset").get<std::vector<float>>(), (std::string)args["texture_path"], (std::string)args["name"], float(args["size"]));
     }
 }

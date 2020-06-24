@@ -5,8 +5,9 @@
 #include "../Log.hpp"
 
 void GameScreen::draw(sf::RenderWindow& window) {
-    m_level_manager.draw(window);
     window.draw(m_background_sprite);
+    
+    m_level_manager.draw(window);
     // Log::log(Log::INFO, "DRAW GAME\n");
     // m_player.draw_collider(window);
     window.draw(m_player);
@@ -45,8 +46,4 @@ GameScreen::GameScreen() {
     m_background_sprite.setTexture(m_background_texture);
     auto[tmpx, tmpy] = m_background_texture.getSize();
     m_background_sprite.setScale(1920.f / tmpx, 1080.f / tmpy);
-
-    m_level_texture = TextGenerator::get_text_texture("LEVEL 69", 37 * 8 * 2);
-    m_level_sprite.setTexture(m_level_texture);
-    m_level_sprite.setPosition(100, 200);
 }

@@ -25,7 +25,12 @@ bool Shot::is_dead() const {
         return true;
     }
     auto [x, y] = m_sprite.getPosition();
-    return (x < -100 or x > 2020 or y < -100 or y > 1180);
+    return (x < -100 or x > 2020 or y < -30 or y > 1180);
+}
+
+void Shot::shot() {
+    // TODO: dangerous
+    m_penetration--;
 }
 
 Shot::Shot(float angle, float speed, uint damage, uint penetration, std::string texture_path, sf::Vector2f pos, float size) {

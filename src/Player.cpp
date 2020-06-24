@@ -12,13 +12,17 @@ void Player::move_right(float elapsed) {
 void Player::shoot() {
     if(m_weapon->can_shoot(m_time_from_last_shot, m_shoot_frequency)) {
         m_time_from_last_shot = 0.f;
-        Log::log(Log::ERROR, "Player shoot!\n");
         auto shots = m_weapon->shoot(m_sprite.getPosition());
         for (auto& shot : shots) {
             m_shots.push_back(std::move(shot));
         }
     }
 }
+
+std::vector<std::unique_ptr<Shot>>& Player::get_shots() {
+    return m_shots;
+}
+
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     for (auto& shot : m_shots) {
@@ -56,7 +60,7 @@ void Player::update(float elapsed) {
 }
 
 Player::Player() {
-    m_move_speed = 150.f;
+    m_move_speed = 2000.f;
     m_shoot_frequency = 0.5f;
     m_time_from_last_shot = 100.f;
     m_weapon = Weapons::get_weapon("0");

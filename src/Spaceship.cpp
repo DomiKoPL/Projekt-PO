@@ -19,7 +19,7 @@ void Spaceship::set_texture(const std::string path) {
     m_sprite.setOrigin(width / 2, 0);
     m_sprite.setScale(scale, scale);
     
-    ConvexColliders::set_colliders(ColliderMaker::make_collider(m_texture.copyToImage(), 3, {scale, scale}));
+    ConvexColliders::set_colliders(ColliderMaker::make_collider(m_texture.copyToImage(), 2, {scale, scale}));
     ConvexColliders::set_origin(sf::Vector2f{width / 2.f, 0.f} * scale);
 }
 
@@ -47,6 +47,16 @@ void Spaceship::move(float x, float y) {
 void Spaceship::move(sf::Vector2f offset) {
     m_sprite.move(offset);
     ConvexColliders::move(offset);
+}
+
+void Spaceship::rotate(float angle) {
+    m_sprite.rotate(angle);
+    ConvexColliders::rotate(angle);
+}
+
+void Spaceship::set_rotation(float angle) {
+    m_sprite.setRotation(angle);
+    ConvexColliders::set_rotation(angle);
 }
 
 Spaceship::Spaceship() {

@@ -17,6 +17,8 @@ public:
     void set_origin(sf::Vector2f pos);
     void move(float x, float y);
     void move(sf::Vector2f offset);
+    void rotate(float angle);
+    void set_rotation(float angle);
 
     Spaceship();
 };

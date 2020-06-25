@@ -10,7 +10,7 @@ sf::Texture TextGenerator::get_text_texture(const std::string text, uint width) 
 
     sf::RenderTexture texture;
 
-    Log::log(Log::INFO, "Generating text = {}\n", text);
+    // Log::log(Log::INFO, "Generating text = {}\n", text);
     uint correct_width = 0;
     for(const char& c : text) {
 
@@ -28,8 +28,9 @@ sf::Texture TextGenerator::get_text_texture(const std::string text, uint width) 
     }
     texture.clear(sf::Color::Transparent);
 
-    Log::log(Log::INFO, "{} {}\n", width, width * character_height / character_width);
-    Log::log(Log::INFO, "Wid = {}\n", width_per_character);
+    // Log::log(Log::INFO, "{} {}\n", width, width * character_height / character_width);
+    // Log::log(Log::INFO, "{} {}\n", correct_width, correct_width * character_height / character_width);
+    // Log::log(Log::INFO, "Wid = {}\n", width_per_character);
     sf::Sprite character;
     character.setTexture(TextureManager::instance().get_texture("Resources/Space Shooter - 1/Font46x37.png"));
     character.setScale(scale, scale);

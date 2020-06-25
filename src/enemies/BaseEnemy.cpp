@@ -2,6 +2,7 @@
 #include <math.h>
 #include "../Log.hpp"
 #include <random>
+#include "../TextureManager.hpp"
 
 void BaseEnemy::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     if(m_current_time < m_time_offset) {
@@ -18,12 +19,25 @@ void BaseEnemy::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     //     target.draw(circle, states);
     // }
 
+    if(is_dead()) {
+        if(not m_death_animation.is_done()) {
+            target.draw(m_death);
+        }
+        return;
+    }
+
     Spaceship::draw(target, states);
 }
 
 
 void BaseEnemy::update(Player& player [[maybe_unused]], float elapsed) {
     m_current_time += elapsed;
+
+    m_death.setPosition(m_sprite.getPosition());
+    if(is_dead()) {
+        m_death_animation.update(m_death, elapsed);
+        return;
+    }
 
     if(m_current_time < m_time_offset) {
         // Log::log(Log::INFO, "Not yet {} {}\n", m_current_time, m_time_offset);
@@ -100,6 +114,15 @@ void BaseEnemy::update(Player& player [[maybe_unused]], float elapsed) {
 bool BaseEnemy::is_visible() const {
     if(m_current_time >= m_time_offset) {
         auto box = m_sprite.getGlobalBounds();
+
+        if(not m_death_animation.is_done()) {
+            return true;
+        }
+
+        if(is_dead()) {
+            return false;
+        }
+        
         if(box.intersects(sf::FloatRect(0, 0, 1920, 1080))) {
             return true;
         }
@@ -192,4 +215,13 @@ BaseEnemy::BaseEnemy(std::vector<sf::Vector2f> goals, float time_offset, float s
     set_texture(texture_path);
     set_position(goals.at(0));
     set_rotation(0);
+
+    m_death.setTexture(TextureManager::instance().get_texture("Resources/Space Shooter - 1/Fx/Fx7.png"));
+    int w = 656 / 8;
+    m_death.setTextureRect(sf::IntRect(0, 0, w, 72));
+    m_death.setOrigin(w / 2.f, 72.f / 2);
+    // 656 / 8, 72
+    for(int i = 0; i < 8; i++) {
+        m_death_animation.addFrame({sf::IntRect(i * w, 0, w, 72), 0.05});
+    }
 }

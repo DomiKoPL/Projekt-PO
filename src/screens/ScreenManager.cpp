@@ -38,6 +38,7 @@ void ScreenManager::set_screen(const std::string screen_name) {
         Log::log(Log::ERROR, "Screen \"{}\" not found!\n", screen_name);
     }
     current_screen = screens[screen_name];
+    current_screen->reset();
 }
 
 void ScreenManager::close() {

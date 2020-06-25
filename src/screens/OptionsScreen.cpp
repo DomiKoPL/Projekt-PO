@@ -24,6 +24,10 @@ void OptionsScreen::handle_event(sf::RenderWindow& window, sf::Event event) {
     }
 }
 
+void OptionsScreen::reset() {
+
+}
+
 OptionsScreen::OptionsScreen() {
     
 }

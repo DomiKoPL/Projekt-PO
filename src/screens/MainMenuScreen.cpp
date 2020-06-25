@@ -64,6 +64,10 @@ MainMenuScreen::MainMenuScreen() {
     m_buttons.push_back(exit_button);
 }
 
+void MainMenuScreen::reset() {
+
+}
+
 MainMenuScreen::~MainMenuScreen() {
 
 }

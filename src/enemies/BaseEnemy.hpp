@@ -3,6 +3,7 @@
 #include "../Spaceship.hpp"
 #include "../Player.hpp"
 #include "../Shot.hpp"
+#include "../effects/Animation.hpp"
 
 class BaseEnemy : public Spaceship {
 protected:
@@ -15,6 +16,10 @@ protected:
     float m_rotation;
     bool m_path_end;
     float m_random_goal_x;
+    
+    sf::Sprite m_death;
+    Animation m_death_animation;
+
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 public:
     virtual std::vector<std::unique_ptr<Shot>> shot(Player& player, float elapsed) = 0;

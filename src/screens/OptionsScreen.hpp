@@ -10,6 +10,7 @@ public:
     void draw(sf::RenderWindow& window);
     void update(sf::RenderWindow& window, float elapsed);
     void handle_event(sf::RenderWindow& window, sf::Event event);
+    void reset();
     OptionsScreen();
     ~OptionsScreen();
 };

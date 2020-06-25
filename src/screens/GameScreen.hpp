@@ -18,10 +18,15 @@ private:
     float m_background_move_speed = 10.f;
     float m_background_current_y = 0.f;
     LevelManager m_level_manager;
+
+    sf::Sprite m_game_over;
+    sf::Texture m_press_space_texture;
+    sf::Sprite m_press_space;
 public:
     void draw(sf::RenderWindow& window);
     void update(sf::RenderWindow& window, float elapsed);
     void handle_event(sf::RenderWindow& window, sf::Event event);
+    void reset();
 
     GameScreen();
 };

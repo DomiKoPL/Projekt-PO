@@ -17,7 +17,11 @@ private:
     std::vector<std::unique_ptr<Shot>> m_shots;
     int dir = 1;
     float cnt_time = 1.0f;
-
+    int m_score;
+    sf::Texture m_score_texture;
+    sf::Sprite m_score_sprite;
+    sf::Texture m_highscore_texture;
+    sf::Sprite m_highscore_sprite;
 public:
     void draw(sf::RenderWindow &window);
     void update(Player &player, float elapsed);

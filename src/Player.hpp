@@ -3,6 +3,7 @@
 #include "Spaceship.hpp"
 #include "Weapon.hpp"
 #include <memory>
+#include "effects/Animation.hpp"
 
 class Player : public Spaceship {
 private:
@@ -14,6 +15,11 @@ private:
     float m_shield_time;
     int m_life;
     sf::Sprite m_shield;
+    int m_score;
+
+    sf::Sprite m_death;
+    Animation m_death_animation;
+
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 public:
     void move_left(float elapsed);
@@ -23,6 +29,8 @@ public:
     void update(float elapsed);
     void hit();
     int get_life() const;
+    void add_score(int score);
+    int get_score() const;
     void give_shield(float shield_time);
     bool is_dead() const;
     

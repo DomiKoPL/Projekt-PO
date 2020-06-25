@@ -25,7 +25,10 @@ bool Shot::is_dead() const {
         return true;
     }
     auto [x, y] = m_sprite.getPosition();
-    return (x < -100 or x > 2020 or y < -30 or y > 1180);
+    if(-90 <= m_angle and m_angle <= 90) {
+        return (x < -100 or x > 2020 or y < -30);
+    }
+    return (x < -100 or x > 2020 or y > 1180);
 }
 
 void Shot::shot() {

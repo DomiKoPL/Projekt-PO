@@ -16,11 +16,15 @@ void LevelManager::next_level() {
 }
 
 void LevelManager::draw(sf::RenderWindow& window) {
+    window.draw(m_background_sprite);
     m_current_level->draw(window);
 }
 
-
 void LevelManager::update(Player& player, float elapsed) {
+    m_background_current_y += m_background_move_speed * elapsed;
+    auto[w, h] = m_background_texture.getSize();
+    m_background_sprite.setTextureRect(sf::IntRect(0, (int)m_background_current_y, w, h));
+    
     if(m_current_level->is_end()) {
         next_level();
     }
@@ -28,6 +32,10 @@ void LevelManager::update(Player& player, float elapsed) {
 }
 
 void LevelManager::update_demo(float elapsed) {
+    m_background_current_y += m_background_move_speed * elapsed;
+    auto[w, h] = m_background_texture.getSize();
+    m_background_sprite.setTextureRect(sf::IntRect(0, (int)m_background_current_y, w, h));
+
     if(m_current_level->is_end()) {
         next_level();
     }
@@ -36,6 +44,8 @@ void LevelManager::update_demo(float elapsed) {
 
 void LevelManager::load() {
     m_times_played++;
+
+    m_background_sprite.setTexture(m_background_texture);
 
     auto formation_json = Settings::get<nlohmann::json>("levels_formation");
     auto X = formation_json.at("X").get<std::vector<float>>();
@@ -155,6 +165,15 @@ void LevelManager::load() {
 LevelManager::LevelManager(bool demo)
     : m_levels_played{0}, m_times_played{0}, m_demo{demo} {
     m_powerups = std::make_shared<std::vector<PowerUp>>();
+    
+    m_background_current_y = 0.f;
+    m_background_texture.loadFromFile("Resources/Background/2.png");
+    m_background_texture.setRepeated(true);
+    
+    m_background_sprite.setTexture(m_background_texture);
+
+    auto[tmpx, tmpy] = m_background_texture.getSize();
+    m_background_sprite.setScale(1920.f / tmpx, 1080.f / tmpy);
 }
 
 LevelManager::LevelManager() : LevelManager(false) {

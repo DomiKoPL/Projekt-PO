@@ -13,7 +13,7 @@ void PowerUp::update(float elapsed) {
 
 void PowerUp::change(Player& player) {
     if(m_type == PowerUpType::SPEED) {
-        player.add_speed(50);
+        player.add_speed(100);
     } else if(m_type == PowerUpType::BULLETS) {
         player.increase_shoot_speed();
     } else if(m_type == PowerUpType::WEAPONUPGRADE) {

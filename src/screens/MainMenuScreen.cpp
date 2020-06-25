@@ -7,8 +7,6 @@
 
 void MainMenuScreen::draw(sf::RenderWindow& window) {
     // Log::log(Log::INFO, "DRAW MainMenu\n");
-    window.draw(m_background_sprite);
-
     m_level_manager.draw(window);
     
     window.draw(m_name);
@@ -20,10 +18,6 @@ void MainMenuScreen::draw(sf::RenderWindow& window) {
 
 void MainMenuScreen::update(sf::RenderWindow& window, float elapsed) {
     // Log::log(Log::INFO, "UPDATE MainMenu\n");
-    m_background_current_y += m_background_move_speed * elapsed;
-    auto[w, h] = m_background_texture.getSize();
-    m_background_sprite.setTextureRect(sf::IntRect(0, (int)m_background_current_y, w, h));
-    
     m_level_manager.update_demo(elapsed);
 
     for(auto& button : m_buttons) {
@@ -80,13 +74,6 @@ MainMenuScreen::MainMenuScreen() {
     exit_button.set_size(500, 160);
     m_buttons.push_back(exit_button);
 
-    m_background_texture.loadFromFile("Resources/Background/2.png");
-    m_background_texture.setRepeated(true);
-
-    m_background_sprite.setTexture(m_background_texture);
-    auto[tmpx, tmpy] = m_background_texture.getSize();
-    m_background_sprite.setScale(1920.f / tmpx, 1080.f / tmpy);
-
     {
         m_name_texture = TextGenerator::get_text_texture("SPACE WAR", 37 * 9 * 6);
         auto[x, y] = m_name_texture.getSize();
@@ -98,7 +85,6 @@ MainMenuScreen::MainMenuScreen() {
 
 void MainMenuScreen::reset() {
     MusicManager::instance().play_music("Resources/Space Shooter - 1/Music/3.ogg");
-    m_background_current_y = 0;
     m_level_manager = LevelManager(true);
     m_level_manager.load();
 }

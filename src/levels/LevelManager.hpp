@@ -11,8 +11,15 @@ private:
     std::shared_ptr<Level> m_current_level;
     uint m_current_level_number, m_levels_played, m_times_played;
     std::shared_ptr<std::vector<PowerUp>> m_powerups;
-    void next_level();
     bool m_demo;
+
+    sf::Texture m_background_texture;
+    sf::Sprite m_background_sprite;
+
+    float m_background_move_speed = -10.f;
+    float m_background_current_y = 0.f;
+    
+    void next_level();
 public:
     void draw(sf::RenderWindow& window);
     void update(Player& player, float elapsed);

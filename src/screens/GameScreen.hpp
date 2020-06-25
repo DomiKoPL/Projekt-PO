@@ -9,15 +9,11 @@
 class GameScreen : public BaseScreen {
 private:
     Player m_player;
-    sf::Texture m_background_texture;
-    sf::Sprite m_background_sprite;
     sf::Texture m_level_texture;
     sf::Sprite m_level_sprite;
 
     sf::Sprite m_player_life_sprite;
-
-    float m_background_move_speed = -10.f;
-    float m_background_current_y = 0.f;
+    
     LevelManager m_level_manager;
 
     sf::Sprite m_game_over;

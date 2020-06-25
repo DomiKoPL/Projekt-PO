@@ -72,7 +72,7 @@ void BaseEnemy::update(Player& player [[maybe_unused]], float elapsed) {
                 angle_change += 360.0;
             }
             
-            float angle_change_per_second = 45.f;
+            float angle_change_per_second = 60.f;
             float speed_boost = 1.0;
             if(m_current_goal + 1 == m_goals.size()) {
                 angle_change_per_second = 4000;

@@ -14,7 +14,9 @@ void GameScreen::draw(sf::RenderWindow& window) {
     // m_player.draw_collider(window);
     if(m_player.is_dead()) {
         window.draw(m_game_over);
-        window.draw(m_press_space);
+        if(m_time_from_death >= 2.f) {
+            window.draw(m_press_space);
+        }
     } 
     window.draw(m_player);
     window.draw(m_level_sprite);
@@ -38,9 +40,10 @@ void GameScreen::update(sf::RenderWindow& window, float elapsed) {
     if(m_player.is_dead()) {
         m_level_manager.update(m_player, elapsed);
         m_player.update(elapsed);
+        m_time_from_death += elapsed;
 
 
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+        if(m_time_from_death > 2.0f and sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
             MusicManager::instance().stop_music("Resources/Space Shooter - 1/Music/4.ogg");
             ScreenManager::set_screen("MainMenuScreen");
         }
@@ -81,6 +84,7 @@ void GameScreen::handle_event(sf::RenderWindow& window, sf::Event event) {
 
 void GameScreen::reset() {
     MusicManager::instance().play_music("Resources/Space Shooter - 1/Music/1.ogg");
+    m_time_from_death = 0;
 
     m_level_manager = LevelManager();
     m_level_manager.load();
@@ -94,7 +98,7 @@ void GameScreen::reset() {
 
     m_background_texture.loadFromFile("Resources/Background/2.png");
     m_background_texture.setRepeated(true);
-    // m_background_texture.loadFromFile("Resources/Space Shooter - 1/Background/1.png");
+
     m_background_sprite.setTexture(m_background_texture);
     auto[tmpx, tmpy] = m_background_texture.getSize();
     m_background_sprite.setScale(1920.f / tmpx, 1080.f / tmpy);
@@ -123,6 +127,7 @@ GameScreen::GameScreen() {
     m_level_manager = LevelManager();
     m_level_manager.load();
 
+    m_time_from_death = 0;
 
     m_player = Player();
     m_background_current_y = 0.f;

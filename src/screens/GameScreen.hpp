@@ -23,6 +23,7 @@ private:
     sf::Sprite m_game_over;
     sf::Texture m_press_space_texture;
     sf::Sprite m_press_space;
+    float m_time_from_death;
 public:
     void draw(sf::RenderWindow& window);
     void update(sf::RenderWindow& window, float elapsed);

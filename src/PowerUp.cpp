@@ -13,12 +13,17 @@ void PowerUp::update(float elapsed) {
 
 void PowerUp::change(Player& player) {
     if(m_type == PowerUpType::SPEED) {
-        player.add_speed(20);
+        player.add_speed(50);
     } else if(m_type == PowerUpType::BULLETS) {
         player.increase_shoot_speed();
     } else if(m_type == PowerUpType::WEAPONUPGRADE) {
         player.upgrade_weapon();
+    } else if(m_type == PowerUpType::SLOW) {
+        player.add_speed(-50);
+    } else if(m_type == PowerUpType::WEAPONDOWNGRADE) {
+        player.downgrade_weapon();
     }
+
     m_used = true;  
 }
 
@@ -26,7 +31,7 @@ void PowerUp::change(Player& player) {
 
 bool PowerUp::is_dead() const {
     auto [x, y] = m_sprite.getPosition();
-    Log::log(Log::INFO, "Power = {} {} {}\n", int(m_used), x, y);
+    // Log::log(Log::INFO, "Power = {} {} {}\n", int(m_used), x, y);
     if(m_used) return true;
     return (x < -100 or x > 2020 or y < - 30 or y > 1180);
 }
@@ -43,7 +48,13 @@ PowerUp::PowerUp(PowerUpType type, sf::Vector2f position) : m_type{type}, m_spee
         path = "Resources/Space Shooter - 1/Item/PowerUp2.png";
     } else if(m_type == PowerUpType::WEAPONUPGRADE) {
         path = "Resources/Space Shooter - 1/Item/PowerUp1.png";
-    }   
+    } else if(m_type == PowerUpType::SLOW) {
+        path = "Resources/Space Shooter - 1/Item/PowerUp6.png";
+        m_speed = 500;
+    } else if(m_type == PowerUpType::WEAPONDOWNGRADE) {
+        path = "Resources/Space Shooter - 1/Item/PowerUp7.png";
+        m_speed = 500;
+    }
 
     auto& texture = TextureManager::instance().get_texture(path);
     m_sprite.setTexture(texture);

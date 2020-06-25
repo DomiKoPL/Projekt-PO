@@ -135,18 +135,18 @@ void Level::update(Player& player, float elapsed) {
         if(enemy->is_dead()) {
             auto x = random(0, 8000);
             if(x <= 5) {
-                Log::log(Log::INFO, "NEW POWER UP\n");
                 m_powerups->push_back(PowerUp(PowerUpType::SPEED, enemy->get_position()));
             } else if(x <= 10) {
-                Log::log(Log::INFO, "NEW POWER UP\n");
                 m_powerups->push_back(PowerUp(PowerUpType::BULLETS, enemy->get_position()));
             } else if(x <= 15) {
-                Log::log(Log::INFO, "NEW POWER UP\n");
                 m_powerups->push_back(PowerUp(PowerUpType::WEAPONUPGRADE, enemy->get_position()));
+            } else if(x <= 25) {
+                m_powerups->push_back(PowerUp(PowerUpType::WEAPONDOWNGRADE, enemy->get_position()));
+            } else if(x <= 35) {
+                m_powerups->push_back(PowerUp(PowerUpType::SLOW, enemy->get_position()));
             }
         }
     }
-    
 
     m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [&](auto& enemy) {
         if(enemy->is_dead() and not enemy->is_visible()) {

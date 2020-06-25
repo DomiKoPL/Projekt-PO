@@ -83,18 +83,23 @@ void Player::update(float elapsed) {
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num0)) {
         m_weapon = Weapons::get_weapon("0");
+        m_weapon_numer = 0;
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) {
         m_weapon = Weapons::get_weapon("1");
+        m_weapon_numer = 1;
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
         m_weapon = Weapons::get_weapon("2");
+        m_weapon_numer = 2;
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)) {
         m_weapon = Weapons::get_weapon("3");
+        m_weapon_numer = 3;
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num8)) {
         m_weapon = Weapons::get_weapon("8");
+        m_weapon_numer = 8;
     }
 }
 
@@ -105,6 +110,7 @@ void Player::hit() {
         if(is_dead()) {
             MusicManager::instance().play_sound("Resources/Space Shooter - 1/Sound/Death.wav");
         }
+        downgrade_weapon();
         give_shield(1.5);
     }
 }
@@ -131,10 +137,13 @@ bool Player::is_dead() const {
 
 void Player::add_speed(float speed) {
     m_move_speed += speed;
+    m_move_speed = std::max(m_move_speed, 200.f);
+    m_move_speed = std::min(m_move_speed, 2000.f);
 }
 
 void Player::increase_shoot_speed() {
     m_shoot_frequency *= 0.95;
+    m_shoot_frequency = std::max(0.1f, m_shoot_frequency);
 }
 
 void Player::upgrade_weapon() {
@@ -144,9 +153,16 @@ void Player::upgrade_weapon() {
     }
 }
 
+void Player::downgrade_weapon() {
+    if(Weapons::count_weapon(std::to_string(m_weapon_numer - 1))) {
+        m_weapon_numer--;
+        m_weapon = Weapons::get_weapon(std::to_string(m_weapon_numer));
+    }
+}
+
 Player::Player() {
-    m_move_speed = 2000.f;
-    m_shoot_frequency = 0.5f;
+    m_move_speed = 200.f;
+    m_shoot_frequency = 1.5f;
     m_time_from_last_shot = 100.f;
     m_weapon_numer = 0;
     m_weapon = Weapons::get_weapon("0");

@@ -10,8 +10,8 @@ private:
     Weapon* m_weapon;
     int m_weapon_numer;
     std::vector<std::unique_ptr<Shot>> m_shots;
-    float m_move_speed = 2000.f;
-    float m_shoot_frequency = 0.5f;
+    float m_move_speed;
+    float m_shoot_frequency;
     float m_time_from_last_shot;
     float m_shield_time;
     int m_life;
@@ -38,6 +38,7 @@ public:
     void add_speed(float speed);
     void increase_shoot_speed();
     void upgrade_weapon();
+    void downgrade_weapon();
 
     
     Player();

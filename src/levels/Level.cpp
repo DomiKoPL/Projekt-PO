@@ -12,6 +12,13 @@ T random(T min, T max) {
 	
 
 void Level::draw(sf::RenderWindow& window) {
+    if(m_demo) {
+        for(auto& enemy : m_enemies) {
+            window.draw(*enemy);
+        }
+        return;   
+    }
+
     if(m_current_time <= 5.5) {
         window.draw(m_level_sprite);
     }
@@ -31,7 +38,6 @@ void Level::draw(sf::RenderWindow& window) {
     window.draw(m_score_sprite);
     window.draw(m_highscore_sprite);
 }
-#include "../Log.hpp"
 
 void Level::update(Player& player, float elapsed) {
     for(auto& powerup : *m_powerups) {
@@ -180,17 +186,47 @@ void Level::update(Player& player, float elapsed) {
         }
     }
 }
+#include "../Log.hpp"
+
+void Level::update_demo(float elapsed) {
+    m_current_time += elapsed;
+
+    if(m_current_time >= 30) {
+        m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [](auto enemy) {
+            return enemy->is_outside();
+        }), m_enemies.end());
+    }
+
+    for(auto& enemy : m_enemies) {
+        Player player;
+        enemy->update(player, elapsed);
+    }
+
+    uint path_ends = 0;
+    for(auto& enemy : m_enemies) {
+        path_ends += enemy->path_end();
+    }
+
+    if(path_ends == m_enemies.size()) {
+        for(auto& enemy : m_enemies) {
+            if(not enemy->is_dead()) {
+                enemy->move_random_down(elapsed);
+            }
+        }
+    }
+}
 
 bool Level::is_end() {
     return m_enemies.size() == 0u;
 }
 
-Level::Level(const std::string name, std::vector<std::shared_ptr<BaseEnemy>> enemies, std::shared_ptr<std::vector<PowerUp>> powerups) 
+Level::Level(const std::string name, std::vector<std::shared_ptr<BaseEnemy>> enemies, std::shared_ptr<std::vector<PowerUp>> powerups, bool demo) 
     : n_name{name}, 
       m_enemies{enemies},
       m_current_time{0},
       m_score{0},
-      m_powerups{powerups}
+      m_powerups{powerups},
+      m_demo{demo}
     {
     m_level_texture = TextGenerator::get_text_texture("LEVEL " + name, 1.8 * 37 * (6 + name.size()));
     m_level_sprite.setTexture(m_level_texture);
@@ -207,13 +243,11 @@ Level::Level(const std::string name, std::vector<std::shared_ptr<BaseEnemy>> ene
 
     {
         auto highscore = Settings::get<int>("highscore");
-        Log::log(Log::INFO, "HIGHSCORE = {}\n", highscore);
         std::string text = "HIGHSCORE " + std::to_string(highscore);
         m_highscore_texture = TextGenerator::get_text_texture(text, 37 * text.size());
         m_highscore_sprite.setTexture(m_highscore_texture);
         auto [x, y] = m_highscore_texture.getSize();
         m_highscore_sprite.setOrigin(x / 2, 0);
         m_highscore_sprite.setPosition(1920.f * 2 / 3, 40);
-
     }
 }

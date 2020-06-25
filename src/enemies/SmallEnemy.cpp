@@ -19,7 +19,7 @@ std::vector<std::unique_ptr<Shot>> SmallEnemy::shot(Player& player, float elapse
     if(m_time_to_shot <= 0.f) {
         MusicManager::instance().play_sound("Resources/Space Shooter - 1/Sound/3.wav");
         m_time_to_shot = random(0.1f, 25.f);
-        shots.emplace_back(new Shot(180, random(200, 500), 1, 1, "Resources/Space Shooter - 1/Item/Bomb.png", m_sprite.getPosition(), 20));
+        shots.emplace_back(new Shot(180, random(200, 500), 1, 1, "Resources/Space Shooter - 1/Item/Bomb.png", m_sprite.getPosition(), 30));
     }
     return shots;
 }
@@ -27,7 +27,7 @@ std::vector<std::unique_ptr<Shot>> SmallEnemy::shot(Player& player, float elapse
 
 SmallEnemy::SmallEnemy(std::vector<sf::Vector2f> goals, float time_offset, float speed, float start_rotation, uint hp, const std::string texture_path)
     : BaseEnemy(goals, time_offset, speed, start_rotation, hp, texture_path),
-        m_time_to_shot{time_offset + random(4.f, 15.f)}
+        m_time_to_shot{time_offset + random(0.1f, 12.f)}
     {
     
 }

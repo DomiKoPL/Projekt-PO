@@ -25,6 +25,7 @@ public:
     virtual std::vector<std::unique_ptr<Shot>> shot(Player& player, float elapsed) = 0;
     void update(Player& player, float elapsed);
     bool is_visible() const;
+    bool is_outside() const;
     bool is_dead() const;
     bool path_end();
     void deal_dmg(uint dmg);

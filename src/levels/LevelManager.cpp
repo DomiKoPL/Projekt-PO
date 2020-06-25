@@ -19,11 +19,19 @@ void LevelManager::draw(sf::RenderWindow& window) {
     m_current_level->draw(window);
 }
 
+
 void LevelManager::update(Player& player, float elapsed) {
     if(m_current_level->is_end()) {
         next_level();
     }
     m_current_level->update(player, elapsed);
+}
+
+void LevelManager::update_demo(float elapsed) {
+    if(m_current_level->is_end()) {
+        next_level();
+    }
+    m_current_level->update_demo(elapsed);
 }
 
 void LevelManager::load() {
@@ -137,16 +145,20 @@ void LevelManager::load() {
 
         Log::log(Log::INFO, "Making level, {}\n", level_name);
         uint lvl = std::stoi(level_name) + m_levels_played;
-        m_levels[std::stoi(level_name)] = std::make_shared<Level>(std::to_string(lvl), enemies, m_powerups);
+        m_levels[std::stoi(level_name)] = std::make_shared<Level>(std::to_string(lvl), enemies, m_powerups, m_demo);
     }
 
     m_current_level = m_levels[Settings::get<int>("start_level")];
     m_current_level_number = Settings::get<int>("start_level");
 }
 
-LevelManager::LevelManager()
-    : m_levels_played{0}, m_times_played{0} {
+LevelManager::LevelManager(bool demo)
+    : m_levels_played{0}, m_times_played{0}, m_demo{demo} {
     m_powerups = std::make_shared<std::vector<PowerUp>>();
+}
+
+LevelManager::LevelManager() : LevelManager(false) {
+
 }
 
 LevelManager::~LevelManager() {

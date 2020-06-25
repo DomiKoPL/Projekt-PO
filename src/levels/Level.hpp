@@ -26,9 +26,11 @@ private:
     sf::Sprite m_highscore_sprite;
     
     std::shared_ptr<std::vector<PowerUp>> m_powerups;
+    bool m_demo;
 public:
     void draw(sf::RenderWindow &window);
     void update(Player &player, float elapsed);
+    void update_demo(float elapsed);
     bool is_end();
-    Level(const std::string name, std::vector<std::shared_ptr<BaseEnemy>> enemies, std::shared_ptr<std::vector<PowerUp>> powerups);
+    Level(const std::string name, std::vector<std::shared_ptr<BaseEnemy>> enemies, std::shared_ptr<std::vector<PowerUp>> powerups, bool demo);
 };

@@ -131,6 +131,10 @@ bool BaseEnemy::is_visible() const {
     return false;
 }
 
+bool BaseEnemy::is_outside() const {
+    return not m_sprite.getGlobalBounds().intersects(sf::FloatRect(0, 0, 1920, 1080));
+}
+
 bool BaseEnemy::is_dead() const {
     return m_hp == 0;
 }

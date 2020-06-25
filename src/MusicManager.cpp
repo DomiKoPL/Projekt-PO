@@ -17,11 +17,14 @@ void MusicManager::play_sound(const std::string name) {
         sounds.pop_front();
     }
 
-    if(sounds.size() < 6u) {
-        sounds.push_back(sf::Sound());
-        sounds.back().setBuffer(*m_sounds_buffers[name]);
-        sounds.back().play();
+    if(sounds.size() >= 6u) {
+        sounds.front().stop();
+        sounds.pop_front();
     }
+    
+    sounds.push_back(sf::Sound());
+    sounds.back().setBuffer(*m_sounds_buffers[name]);
+    sounds.back().play();
 }
 
 void MusicManager::play_music(const std::string name) {

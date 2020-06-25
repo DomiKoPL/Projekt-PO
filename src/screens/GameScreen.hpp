@@ -4,6 +4,7 @@
 #include "../Player.hpp"
 #include "../gui/Button.hpp"
 #include "../levels/LevelManager.hpp"
+#include "../MusicManager.hpp"
 
 class GameScreen : public BaseScreen {
 private:

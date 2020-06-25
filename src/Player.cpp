@@ -1,6 +1,7 @@
 #include "Player.hpp"
 #include "Log.hpp"
 #include "TextureManager.hpp"
+#include "MusicManager.hpp"
 
 void Player::move_left(float elapsed) {
     float x = m_sprite.getPosition().x - m_sprite.getGlobalBounds().width / 2;
@@ -101,6 +102,9 @@ void Player::hit() {
     if(m_shield_time <= 0) {
         Log::log(Log::INFO, "PLAYER HIT\n");
         m_life--;
+        if(is_dead()) {
+            MusicManager::instance().play_sound("Resources/Space Shooter - 1/Sound/Death.wav");
+        }
         give_shield(1.5);
     }
 }

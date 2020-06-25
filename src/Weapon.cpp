@@ -1,6 +1,7 @@
 #include "Weapon.hpp"
 #include "Settings.hpp"
 #include "Log.hpp"
+#include "MusicManager.hpp"
 
 bool Weapon::can_shoot(float time_from_last_shot, float shoot_frequency) {
     shoot_frequency /= m_shoot_frequency_multiplier;
@@ -10,6 +11,7 @@ bool Weapon::can_shoot(float time_from_last_shot, float shoot_frequency) {
 std::vector<std::unique_ptr<Shot>> Weapon::shoot(sf::Vector2f position) {
     // Log::log(Log::INFO, "{}\n", m_name);
     std::vector<std::unique_ptr<Shot>> shots;
+    MusicManager::instance().play_sound("Resources/Space Shooter - 1/Sound/2.wav");
     for(uint i = 0; i < m_shoot_angles.size(); i++) {
         shots.emplace_back(new Shot(m_shoot_angles[i], m_shoot_speed, m_damage, m_penetration, m_texture_path, position + sf::Vector2f(m_shoot_offset[i], 0.f), m_size));
     }

@@ -2,6 +2,7 @@
 #include "ScreenManager.hpp"
 #include "../Log.hpp"
 #include "../Settings.hpp"
+#include "../MusicManager.hpp"
 
 void MainMenuScreen::draw(sf::RenderWindow& window) {
     // Log::log(Log::INFO, "DRAW MainMenu\n");
@@ -25,6 +26,7 @@ void MainMenuScreen::handle_event(sf::RenderWindow& window, sf::Event event) {
 
     if(event.type == sf::Event::KeyPressed) {
         if(event.key.code == sf::Keyboard::Space) {
+            MusicManager::instance().stop_music("Resources/Space Shooter - 1/Music/3.ogg");
             ScreenManager::set_screen("GameScreen");
         }
     }
@@ -33,6 +35,7 @@ void MainMenuScreen::handle_event(sf::RenderWindow& window, sf::Event event) {
 MainMenuScreen::MainMenuScreen() {
     play_button.add_function_when_clicked([&]() {
         Log::log(Log::INFO, "Button clicked\n");
+        MusicManager::instance().stop_music("Resources/Space Shooter - 1/Music/3.ogg");
         ScreenManager::set_screen("GameScreen");
     });
     play_button.load_texture("Resources/PNG/Menu/Level menu/play.png");
@@ -54,6 +57,7 @@ MainMenuScreen::MainMenuScreen() {
 
     exit_button.add_function_when_clicked([&]() {
         Log::log(Log::INFO, "Button clicked\n");
+        MusicManager::instance().stop_music("Resources/Space Shooter - 1/Music/3.ogg");
         ScreenManager::close();
     });
     exit_button.load_texture("Resources/PNG/Menu/Pause menu/exit.png");
@@ -65,7 +69,7 @@ MainMenuScreen::MainMenuScreen() {
 }
 
 void MainMenuScreen::reset() {
-
+    MusicManager::instance().play_music("Resources/Space Shooter - 1/Music/3.ogg");
 }
 
 MainMenuScreen::~MainMenuScreen() {

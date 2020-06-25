@@ -69,29 +69,33 @@ void Level::update(Player& player, float elapsed) {
         }
     }
     
-    auto& player_shots = player.get_shots();
-    for(auto& enemy : m_enemies) {
-        if(enemy->is_visible() and not enemy->is_dead()) {
-            for(auto& shot : player_shots) {
-                if(enemy->is_colliding_with(*shot)) {
-                    enemy->deal_dmg(shot->get_damage());
-                    shot->shot();
+    if(not player.is_dead()) {
+        auto& player_shots = player.get_shots();
+        for(auto& enemy : m_enemies) {
+            if(enemy->is_visible() and not enemy->is_dead()) {
+                for(auto& shot : player_shots) {
+                    if(enemy->is_colliding_with(*shot)) {
+                        enemy->deal_dmg(shot->get_damage());
+                        shot->shot();
+                    }
                 }
-            }
-            player_shots.erase(std::remove_if(player_shots.begin(), player_shots.end(), [](auto& shot) {
-                return shot->is_dead();
-            }), player_shots.end());
-       
-            if(enemy->is_colliding_with(player)) {
-                player.hit();
+                player_shots.erase(std::remove_if(player_shots.begin(), player_shots.end(), [](auto& shot) {
+                    return shot->is_dead();
+                }), player_shots.end());
+        
+                if(enemy->is_colliding_with(player)) {
+                    player.hit();
+                }
             }
         }
     }
 
     for(auto& shot : m_shots) {
-        if(shot->is_colliding_with(player)) {
-            player.hit();
-            shot->shot();
+        if(not player.is_dead()) {
+            if(shot->is_colliding_with(player)) {
+                player.hit();
+                shot->shot();
+            }
         }
     }
 
@@ -165,6 +169,6 @@ Level::Level(const std::string name, std::vector<std::shared_ptr<BaseEnemy>> ene
         auto [x, y] = m_highscore_texture.getSize();
         m_highscore_sprite.setOrigin(x / 2, 0);
         m_highscore_sprite.setPosition(1920.f * 2 / 3, 40);
-        
+
     }
 }

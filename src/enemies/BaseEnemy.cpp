@@ -3,6 +3,7 @@
 #include "../Log.hpp"
 #include <random>
 #include "../TextureManager.hpp"
+#include "../MusicManager.hpp"
 
 void BaseEnemy::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     if(m_current_time < m_time_offset) {
@@ -141,6 +142,10 @@ bool BaseEnemy::path_end() {
 
 void BaseEnemy::deal_dmg(uint dmg) {
     m_hp -= std::min(m_hp, dmg);
+
+    if(is_dead()) {
+        MusicManager::instance().play_sound("Resources/Space Shooter - 1/Sound/5.wav");
+    }
 }
 
 void BaseEnemy::move_right(float elapsed) {

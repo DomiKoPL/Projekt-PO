@@ -76,47 +76,46 @@ void Player::update(float elapsed) {
         shot->update(elapsed);
     }
 
-
     m_shots.erase(std::remove_if(m_shots.begin(), m_shots.end(), [](std::unique_ptr<Shot>& shot) {
         return shot->is_dead();
     }), m_shots.end());
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num0)) {
-        m_weapon = Weapons::get_weapon("0");
-        m_weapon_numer = 0;
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) {
-        m_weapon = Weapons::get_weapon("1");
-        m_weapon_numer = 1;
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
-        m_weapon = Weapons::get_weapon("2");
-        m_weapon_numer = 2;
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)) {
-        m_weapon = Weapons::get_weapon("3");
-        m_weapon_numer = 3;
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num4)) {
-        m_weapon = Weapons::get_weapon("4");
-        m_weapon_numer = 4;
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num5)) {
-        m_weapon = Weapons::get_weapon("5");
-        m_weapon_numer = 5;
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num6)) {
-        m_weapon = Weapons::get_weapon("6");
-        m_weapon_numer = 6;
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num7)) {
-        m_weapon = Weapons::get_weapon("7");
-        m_weapon_numer = 7;
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num8)) {
-        m_weapon = Weapons::get_weapon("8");
-        m_weapon_numer = 8;
-    }
+    // if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num0)) {
+    //     m_weapon = Weapons::get_weapon("0");
+    //     m_weapon_numer = 0;
+    // }
+    // if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) {
+    //     m_weapon = Weapons::get_weapon("1");
+    //     m_weapon_numer = 1;
+    // }
+    // if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
+    //     m_weapon = Weapons::get_weapon("2");
+    //     m_weapon_numer = 2;
+    // }
+    // if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)) {
+    //     m_weapon = Weapons::get_weapon("3");
+    //     m_weapon_numer = 3;
+    // }
+    // if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num4)) {
+    //     m_weapon = Weapons::get_weapon("4");
+    //     m_weapon_numer = 4;
+    // }
+    // if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num5)) {
+    //     m_weapon = Weapons::get_weapon("5");
+    //     m_weapon_numer = 5;
+    // }
+    // if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num6)) {
+    //     m_weapon = Weapons::get_weapon("6");
+    //     m_weapon_numer = 6;
+    // }
+    // if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num7)) {
+    //     m_weapon = Weapons::get_weapon("7");
+    //     m_weapon_numer = 7;
+    // }
+    // if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num8)) {
+    //     m_weapon = Weapons::get_weapon("8");
+    //     m_weapon_numer = 8;
+    // }
 }
 
 void Player::hit() {
@@ -190,7 +189,7 @@ Player::Player() {
     c.a = 150;
     m_shield.setColor(c);
     auto box = TextureManager::instance().get_texture("Resources/Space Shooter - 1/Fx/Shield.png").getSize();
-    Log::log(Log::INFO, "BOXX = {} {}\n", box.x, box.y);
+
     m_shield.setOrigin(box.x / 2, box.y / 2);
     m_shield.setScale(1.6, 1.6);
 

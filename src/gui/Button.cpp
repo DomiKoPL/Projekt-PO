@@ -37,12 +37,12 @@ void Button::update(sf::RenderWindow& window) {
     if(getTransform().transformRect(m_sprite.getGlobalBounds()).contains(x, y)) {
         if(m_sprite.getTexture() != &(m_highlight_texture)) {
             m_sprite.setTexture(m_highlight_texture);
-            Log::log(Log::INFO, "Changing button texture to highlight\n");
+            // Log::log(Log::INFO, "Changing button texture to highlight\n");
         }   
     } else {
         if(m_sprite.getTexture() != &(m_texture)) {
             m_sprite.setTexture(m_texture);
-            Log::log(Log::INFO, "Changing button texture to normal\n");
+            // Log::log(Log::INFO, "Changing button texture to normal\n");
         }   
     }
 }

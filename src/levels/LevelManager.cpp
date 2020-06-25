@@ -48,7 +48,7 @@ void LevelManager::load() {
 
     auto levels = Settings::get<nlohmann::json>("levels");
     for(auto& [level_name, args] : levels.items()) {
-        Log::log(Log::INFO, "name = {}\n", level_name);
+        // Log::log(Log::INFO, "name = {}\n", level_name);
         auto formation = formation_temp;
         auto enemy_hp = args.at("enemy_hp").get<uint>();
         auto texture_path = args.at("enemy_texture_path").get<std::string>();
@@ -97,7 +97,7 @@ void LevelManager::load() {
                         auto d = (p.x - p2.x) * (p.x - p2.x) + (p.y - p2.y) * (p.y - p2.y);
                         if(abs(d - dbest) <= 0.1f) {
                             g = 1;
-                            Log::log(Log::INFO, "best = {} {}, {} {}\n", p.x, p.y, p2.x, p2.y);
+                            // Log::log(Log::INFO, "best = {} {}, {} {}\n", p.x, p.y, p2.x, p2.y);
                             best_formation_pos[{p.x, p.y}].push_back(p2);
                             form.erase(std::find(form.begin(), form.end(), p2));
                             c--;
@@ -108,13 +108,13 @@ void LevelManager::load() {
                 }
 
                 if(not g) {
-                    Log::log(Log::INFO, "GOWNO {}\n", dbest);
+                    Log::log(Log::ERROR, "GOWNO {}\n", dbest);
                 }
             }
         }
 
         for(auto& [enemy_number, enemy] : args["enemies"].items()) {
-            Log::log(Log::INFO, "enemy = {}\n", enemy_number);
+            // Log::log(Log::INFO, "enemy = {}\n", enemy_number);
             
             auto speed = enemy.at("speed").get<float>();
             auto time_offset_start = enemy.at("time_offset_start").get<float>();
@@ -133,7 +133,7 @@ void LevelManager::load() {
             if(type == "small") {
                 for(uint i = 0; i < count; i++) {
                     auto last_pos = goals.back();
-                    Log::log(Log::INFO, "en = {} {}\n", last_pos.x, last_pos.y);
+                    // Log::log(Log::INFO, "en = {} {}\n", last_pos.x, last_pos.y);
                     goals.push_back(best_formation_pos[{last_pos.x, last_pos.y}][0]);
                     best_formation_pos[{last_pos.x, last_pos.y}].erase(best_formation_pos[{last_pos.x, last_pos.y}].begin());
                     enemy_id++;
@@ -143,7 +143,7 @@ void LevelManager::load() {
             }
         }
 
-        Log::log(Log::INFO, "Making level, {}\n", level_name);
+        // Log::log(Log::INFO, "Making level, {}\n", level_name);
         uint lvl = std::stoi(level_name) + m_levels_played;
         m_levels[std::stoi(level_name)] = std::make_shared<Level>(std::to_string(lvl), enemies, m_powerups, m_demo);
     }

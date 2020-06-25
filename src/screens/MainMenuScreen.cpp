@@ -47,7 +47,7 @@ void MainMenuScreen::handle_event(sf::RenderWindow& window, sf::Event event) {
 
 MainMenuScreen::MainMenuScreen() {
     play_button.add_function_when_clicked([&]() {
-        Log::log(Log::INFO, "Button clicked\n");
+        // Log::log(Log::INFO, "Button clicked\n");
         MusicManager::instance().stop_music("Resources/Space Shooter - 1/Music/3.ogg");
         ScreenManager::set_screen("GameScreen");
     });
@@ -58,7 +58,7 @@ MainMenuScreen::MainMenuScreen() {
     m_buttons.push_back(play_button);
 
     options_button.add_function_when_clicked([&]() {
-        Log::log(Log::INFO, "Button clicked\n");
+        // Log::log(Log::INFO, "Button clicked\n");
         ScreenManager::set_screen("OptionsScreen");
     });
     options_button.load_texture("Resources/PNG/Menu/Pause menu/options.png");
@@ -69,7 +69,7 @@ MainMenuScreen::MainMenuScreen() {
     m_buttons.push_back(options_button);
 
     exit_button.add_function_when_clicked([&]() {
-        Log::log(Log::INFO, "Button clicked\n");
+        // Log::log(Log::INFO, "Button clicked\n");
         MusicManager::instance().stop_music("Resources/Space Shooter - 1/Music/3.ogg");
         ScreenManager::close();
     });

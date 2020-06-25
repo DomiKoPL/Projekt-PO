@@ -137,7 +137,7 @@ bool Player::is_dead() const {
 
 void Player::add_speed(float speed) {
     m_move_speed += speed;
-    m_move_speed = std::max(m_move_speed, 200.f);
+    m_move_speed = std::max(m_move_speed, 150.f);
     m_move_speed = std::min(m_move_speed, 2000.f);
 }
 
@@ -161,7 +161,7 @@ void Player::downgrade_weapon() {
 }
 
 Player::Player() {
-    m_move_speed = 200.f;
+    m_move_speed = 250.f;
     m_shoot_frequency = 1.5f;
     m_time_from_last_shot = 100.f;
     m_weapon_numer = 0;

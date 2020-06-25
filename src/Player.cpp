@@ -97,6 +97,22 @@ void Player::update(float elapsed) {
         m_weapon = Weapons::get_weapon("3");
         m_weapon_numer = 3;
     }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num4)) {
+        m_weapon = Weapons::get_weapon("4");
+        m_weapon_numer = 4;
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num5)) {
+        m_weapon = Weapons::get_weapon("5");
+        m_weapon_numer = 5;
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num6)) {
+        m_weapon = Weapons::get_weapon("6");
+        m_weapon_numer = 6;
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num7)) {
+        m_weapon = Weapons::get_weapon("7");
+        m_weapon_numer = 7;
+    }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num8)) {
         m_weapon = Weapons::get_weapon("8");
         m_weapon_numer = 8;

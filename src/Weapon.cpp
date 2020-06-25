@@ -37,6 +37,12 @@ Weapon* Weapons::get_weapon(const std::string name) {
     return m_weapons[name];
 }
 
+
+bool Weapons::count_weapon(const std::string name) {
+    return m_weapons.count(name);
+}
+
+
 void Weapons::load() {
     auto weapons = Settings::get<nlohmann::json>("weapons");
     for(auto& [name, args] : weapons.items()) {

@@ -27,7 +27,7 @@ std::vector<std::unique_ptr<Shot>> SmallEnemy::shot(Player& player, float elapse
 
 SmallEnemy::SmallEnemy(std::vector<sf::Vector2f> goals, float time_offset, float speed, float start_rotation, uint hp, const std::string texture_path)
     : BaseEnemy(goals, time_offset, speed, start_rotation, hp, texture_path),
-        m_time_to_shot{random(2.f, 8.f)}
+        m_time_to_shot{time_offset + random(4.f, 15.f)}
     {
     
 }

@@ -16,7 +16,7 @@ private:
 
     sf::Sprite m_player_life_sprite;
 
-    float m_background_move_speed = 10.f;
+    float m_background_move_speed = -10.f;
     float m_background_current_y = 0.f;
     LevelManager m_level_manager;
 

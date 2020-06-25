@@ -137,7 +137,7 @@ void LevelManager::load() {
 
         Log::log(Log::INFO, "Making level, {}\n", level_name);
         uint lvl = std::stoi(level_name) + m_levels_played;
-        m_levels[std::stoi(level_name)] = std::make_shared<Level>(std::to_string(lvl), enemies);
+        m_levels[std::stoi(level_name)] = std::make_shared<Level>(std::to_string(lvl), enemies, m_powerups);
     }
 
     m_current_level = m_levels[Settings::get<int>("start_level")];
@@ -146,7 +146,7 @@ void LevelManager::load() {
 
 LevelManager::LevelManager()
     : m_levels_played{0}, m_times_played{0} {
-
+    m_powerups = std::make_shared<std::vector<PowerUp>>();
 }
 
 LevelManager::~LevelManager() {

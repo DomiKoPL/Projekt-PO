@@ -4,6 +4,8 @@
 #include "../enemies/SmallEnemy.hpp"
 #include "../gui/TextGenerator.hpp"
 #include <memory>
+#include <vector>
+#include "../PowerUp.hpp"
 
 class Level
 {
@@ -22,9 +24,11 @@ private:
     sf::Sprite m_score_sprite;
     sf::Texture m_highscore_texture;
     sf::Sprite m_highscore_sprite;
+    
+    std::shared_ptr<std::vector<PowerUp>> m_powerups;
 public:
     void draw(sf::RenderWindow &window);
     void update(Player &player, float elapsed);
     bool is_end();
-    Level(const std::string name, std::vector<std::shared_ptr<BaseEnemy>> enemies);
+    Level(const std::string name, std::vector<std::shared_ptr<BaseEnemy>> enemies, std::shared_ptr<std::vector<PowerUp>> powerups);
 };

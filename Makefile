@@ -47,6 +47,7 @@ obj/%.o: src/levels/%.cpp src/levels/%.hpp
 obj/%.o: src/effects/%.cpp src/effects/%.hpp
 	$(CC) $(FLAGS) -c $< -o $(addprefix obj/, $(notdir $(patsubst %.cpp,%.o,$<)))
 
+
 #* jezeli zostal dodany nowy folder to trzeba dla niego stworzyc zasade
 # obj/%.o: src/gui/%.cpp src/gui/%.hpp
 # 	$(CC) $(FLAGS) -c $< -o $(addprefix obj/, $(notdir $(patsubst %.cpp,%.o,$<)))

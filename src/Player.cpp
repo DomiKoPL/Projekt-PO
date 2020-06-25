@@ -129,10 +129,26 @@ bool Player::is_dead() const {
     return m_life <= 0;
 }
 
+void Player::add_speed(float speed) {
+    m_move_speed += speed;
+}
+
+void Player::increase_shoot_speed() {
+    m_shoot_frequency *= 0.95;
+}
+
+void Player::upgrade_weapon() {
+    if(Weapons::count_weapon(std::to_string(m_weapon_numer + 1))) {
+        m_weapon_numer++;
+        m_weapon = Weapons::get_weapon(std::to_string(m_weapon_numer));
+    }
+}
+
 Player::Player() {
     m_move_speed = 2000.f;
     m_shoot_frequency = 0.5f;
     m_time_from_last_shot = 100.f;
+    m_weapon_numer = 0;
     m_weapon = Weapons::get_weapon("0");
     m_shield_time = 5;
     m_life = 3;

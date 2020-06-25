@@ -206,6 +206,11 @@ void BaseEnemy::move_random_down(float elapsed) {
     move(dx, random(0.8f, 1.f) * elapsed * m_speed);
 }
 
+
+sf::Vector2f BaseEnemy::get_position() const {
+    return m_sprite.getPosition();
+}
+
 BaseEnemy::BaseEnemy(std::vector<sf::Vector2f> goals, float time_offset, float speed, float start_rotation, uint hp, const std::string texture_path) 
     :   m_goals{goals}, 
         m_current_goal{1}, 

@@ -27,5 +27,6 @@ private:
     inline static std::map<const std::string, Weapon*> m_weapons;
 public:
     static Weapon* get_weapon(const std::string name);
+    static bool count_weapon(const std::string name);
     static void load();
 };

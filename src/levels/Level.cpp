@@ -1,9 +1,23 @@
 #include "Level.hpp"
 #include "../Settings.hpp"
+#include <random>
+std::mt19937 gen3{std::random_device{}()};
+template <typename T>
+T random(T min, T max) {
+    using dist = std::conditional_t<std::is_integral<T>::value, 
+                    std::uniform_int_distribution<T>, 
+                    std::uniform_real_distribution<T>>;
+    return dist{min, max}(gen3);
+}
+	
 
 void Level::draw(sf::RenderWindow& window) {
     if(m_current_time <= 5.5) {
         window.draw(m_level_sprite);
+    }
+
+    for(auto& powerup : *m_powerups) {
+        window.draw(powerup);
     }
 
     for(auto& shot : m_shots) {
@@ -20,8 +34,22 @@ void Level::draw(sf::RenderWindow& window) {
 #include "../Log.hpp"
 
 void Level::update(Player& player, float elapsed) {
+    for(auto& powerup : *m_powerups) {
+        if(player.is_colliding_with(powerup)) {
+            powerup.change(player);
+        }
+    }
+
+    m_powerups->erase(std::remove_if(m_powerups->begin(), m_powerups->end(), [&](auto powerup) {
+        return powerup.is_dead();
+    }), m_powerups->end());
+
     for(auto& shot : m_shots) {
         shot->update(elapsed);
+    }
+
+    for(auto& powerup : *m_powerups) {
+        powerup.update(elapsed);
     }
     
     m_current_time += elapsed;
@@ -103,8 +131,24 @@ void Level::update(Player& player, float elapsed) {
         return shot->is_dead();
     }), m_shots.end());
 
+    for(auto& enemy : m_enemies) {
+        if(enemy->is_dead()) {
+            auto x = random(0, 8000);
+            if(x <= 5) {
+                Log::log(Log::INFO, "NEW POWER UP\n");
+                m_powerups->push_back(PowerUp(PowerUpType::SPEED, enemy->get_position()));
+            } else if(x <= 10) {
+                Log::log(Log::INFO, "NEW POWER UP\n");
+                m_powerups->push_back(PowerUp(PowerUpType::BULLETS, enemy->get_position()));
+            } else if(x <= 15) {
+                Log::log(Log::INFO, "NEW POWER UP\n");
+                m_powerups->push_back(PowerUp(PowerUpType::WEAPONUPGRADE, enemy->get_position()));
+            }
+        }
+    }
+    
 
-    m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [&player](auto& enemy) {
+    m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [&](auto& enemy) {
         if(enemy->is_dead() and not enemy->is_visible()) {
             player.add_score(1);
             return true;
@@ -141,11 +185,12 @@ bool Level::is_end() {
     return m_enemies.size() == 0u;
 }
 
-Level::Level(const std::string name, std::vector<std::shared_ptr<BaseEnemy>> enemies) 
+Level::Level(const std::string name, std::vector<std::shared_ptr<BaseEnemy>> enemies, std::shared_ptr<std::vector<PowerUp>> powerups) 
     : n_name{name}, 
       m_enemies{enemies},
       m_current_time{0},
-      m_score{0}
+      m_score{0},
+      m_powerups{powerups}
     {
     m_level_texture = TextGenerator::get_text_texture("LEVEL " + name, 1.8 * 37 * (6 + name.size()));
     m_level_sprite.setTexture(m_level_texture);

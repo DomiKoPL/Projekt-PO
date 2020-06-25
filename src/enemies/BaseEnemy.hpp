@@ -31,5 +31,6 @@ public:
     void move_right(float elapsed);
     void move_left(float elapsed);
     void move_random_down(float elapsed);
+    sf::Vector2f get_position() const;
     BaseEnemy(std::vector<sf::Vector2f> goals, float time_offset, float speed, float start_rotation, uint hp, const std::string texture_path);
 };

@@ -8,6 +8,7 @@
 class Player : public Spaceship {
 private:
     Weapon* m_weapon;
+    int m_weapon_numer;
     std::vector<std::unique_ptr<Shot>> m_shots;
     float m_move_speed = 2000.f;
     float m_shoot_frequency = 0.5f;
@@ -33,6 +34,11 @@ public:
     int get_score() const;
     void give_shield(float shield_time);
     bool is_dead() const;
+
+    void add_speed(float speed);
+    void increase_shoot_speed();
+    void upgrade_weapon();
+
     
     Player();
 };

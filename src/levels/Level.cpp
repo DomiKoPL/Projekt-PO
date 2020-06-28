@@ -9,7 +9,41 @@ T random(T min, T max) {
                     std::uniform_real_distribution<T>>;
     return dist{min, max}(gen3);
 }
-	
+
+
+void Level::random_powerup(Player& player, std::shared_ptr<BaseEnemy>& enemy) {
+    auto x = random(0.f, 100.f);
+    if(x <= 5) {
+        m_powerups->push_back(PowerUp(PowerUpType::SPEED, enemy->get_position()));
+        return;
+    }
+    x -= 5;
+
+    if(x <= 5) {
+        m_powerups->push_back(PowerUp(PowerUpType::BULLETS, enemy->get_position()));
+        return;
+    }
+    x -= 5;
+    
+    if(x <= 5) {
+        m_powerups->push_back(PowerUp(PowerUpType::SLOW, enemy->get_position()));
+        return;
+    }
+    x -= 5;
+
+    float p = std::pow((8.f - player.get_weapon_number()), 2.f) / 64.f;
+
+    if(x <= 7 * p) {
+        m_powerups->push_back(PowerUp(PowerUpType::WEAPONUPGRADE, enemy->get_position()));
+        return;
+    }
+    x -= 7 * p;
+
+    if(x <= 7 * (1 - p)) {
+        m_powerups->push_back(PowerUp(PowerUpType::WEAPONDOWNGRADE, enemy->get_position()));
+        return;
+    }
+}
 
 void Level::draw(sf::RenderWindow& window) {
     if(m_demo) {
@@ -27,7 +61,7 @@ void Level::draw(sf::RenderWindow& window) {
         window.draw(powerup);
     }
 
-    for(auto& shot : m_shots) {
+    for(auto& shot : *m_shots) {
         window.draw(*shot);
     }
     
@@ -50,7 +84,7 @@ void Level::update(Player& player, float elapsed) {
         return powerup.is_dead();
     }), m_powerups->end());
 
-    for(auto& shot : m_shots) {
+    for(auto& shot : *m_shots) {
         shot->update(elapsed);
     }
 
@@ -98,7 +132,7 @@ void Level::update(Player& player, float elapsed) {
         if(not enemy->is_dead()) {
             auto shots = enemy->shot(player, elapsed);
             for(auto& shot : shots) {
-                m_shots.push_back(std::move(shot));
+                m_shots->push_back(std::move(shot));
             }
         }
     }
@@ -124,7 +158,7 @@ void Level::update(Player& player, float elapsed) {
         }
     }
 
-    for(auto& shot : m_shots) {
+    for(auto& shot : *m_shots) {
         if(not player.is_dead()) {
             if(shot->is_colliding_with(player)) {
                 player.hit();
@@ -133,26 +167,13 @@ void Level::update(Player& player, float elapsed) {
         }
     }
 
-    m_shots.erase(std::remove_if(m_shots.begin(), m_shots.end(), [](auto& shot) {
+    m_shots->erase(std::remove_if(m_shots->begin(), m_shots->end(), [](auto& shot) {
         return shot->is_dead();
-    }), m_shots.end());
+    }), m_shots->end());
 
     for(auto& enemy : m_enemies) {
-        if(enemy->is_dead()) {
-            //! THIS IS SHIT
-            //TODO: make sth cool
-            auto x = random(0, 1000);
-            if(x <= 10) {
-                m_powerups->push_back(PowerUp(PowerUpType::SPEED, enemy->get_position()));
-            } else if(x <= 20) {
-                m_powerups->push_back(PowerUp(PowerUpType::BULLETS, enemy->get_position()));
-            } else if(x <= 30) {
-                m_powerups->push_back(PowerUp(PowerUpType::WEAPONUPGRADE, enemy->get_position()));
-            } else if(x <= 32) {
-                m_powerups->push_back(PowerUp(PowerUpType::WEAPONDOWNGRADE, enemy->get_position()));
-            } else if(x <= 36) {
-                m_powerups->push_back(PowerUp(PowerUpType::SLOW, enemy->get_position()));
-            }
+        if(enemy->died()) {
+            random_powerup(player, enemy);
         }
     }
 
@@ -188,7 +209,6 @@ void Level::update(Player& player, float elapsed) {
         }
     }
 }
-#include "../Log.hpp"
 
 void Level::update_demo(float elapsed) {
     m_current_time += elapsed;
@@ -219,15 +239,16 @@ void Level::update_demo(float elapsed) {
 }
 
 bool Level::is_end() {
-    return m_enemies.size() == 0u;
+    return m_enemies.size() == 0u and m_shots->size() == 0u and m_powerups->size() == 0u;
 }
 
-Level::Level(const std::string name, std::vector<std::shared_ptr<BaseEnemy>> enemies, std::shared_ptr<std::vector<PowerUp>> powerups, bool demo) 
+Level::Level(const std::string name, std::vector<std::shared_ptr<BaseEnemy>> enemies, std::shared_ptr<std::vector<PowerUp>> powerups, std::shared_ptr<std::vector<std::unique_ptr<Shot>>> shots, bool demo) 
     : n_name{name}, 
       m_enemies{enemies},
       m_current_time{0},
       m_score{0},
       m_powerups{powerups},
+      m_shots{shots},
       m_demo{demo}
     {
     m_level_texture = TextGenerator::get_text_texture("LEVEL " + name, 1.8 * 37 * (6 + name.size()));

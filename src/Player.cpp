@@ -151,6 +151,14 @@ bool Player::is_dead() const {
     return m_life <= 0;
 }
 
+int Player::get_weapon_number() const {
+    return m_weapon_numer;
+}
+
+float Player::get_move_speed() const {
+    return m_move_speed;
+}
+
 void Player::add_speed(float speed) {
     m_move_speed += speed;
     m_move_speed = std::max(m_move_speed, Settings::get<float>("player", "move_speed", "min"));

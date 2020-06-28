@@ -18,5 +18,6 @@ public:
    void addFrame(Frame&& frame);
    void update(sf::Sprite& target, double elapsed); 
    double getLength() const { return totalLength; }
+   double get_progrees() const { return progress; }
    bool is_done() const;
 };

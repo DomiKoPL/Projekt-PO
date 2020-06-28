@@ -3,11 +3,18 @@
 #include "../Log.hpp"
 
 void LevelManager::next_level() {
-    if(m_current_level_number % 5 == 0) {
-        m_bacground_mode = 1;
+    if(m_background_mode == 0) {
+        if(m_current_level_number % 5 == 0) {
+            m_background_mode = 1;
+            m_background_boost_time_current = 0.f;
+            return;
+        }
+    } else if(m_background_mode != 4) {
+        return;
     }
     
     m_current_level_number++;
+    m_background_mode = 0;
     if(not m_levels.count(m_current_level_number)) {
         Log::log(Log::INFO, "Loading {}\n", m_current_level_number);
         m_levels_played += m_current_level_number - 1;
@@ -25,14 +32,54 @@ void LevelManager::draw(sf::RenderWindow& window) {
 }
 
 void LevelManager::update(Player& player, float elapsed) {
-    m_background_current_y += m_background_move_speed * elapsed;
-    auto[w, h] = m_background_texture.getSize();
-    m_background_sprite.setTextureRect(sf::IntRect(0, (int)m_background_current_y, w, h));
+    if(m_background_mode == 0) {
+        m_background_current_y -= m_background_move_speed * elapsed;
+        auto[w, h] = m_background_texture.getSize();
+        m_background_sprite.setTextureRect(sf::IntRect(0, (int)m_background_current_y, w, h));
+    } 
     
     if(m_current_level->is_end()) {
         next_level();
     }
-    m_current_level->update(player, elapsed);
+
+    // Log::log(Log::INFO, "mode = {}, speed = {}, time = {}\n", m_background_mode, m_background_move_speed, m_background_boost_time_current);
+    
+    if(m_background_mode == 1) {
+        m_background_boost_time_current += elapsed;
+        m_background_move_speed += elapsed *  (m_background_max_speed - m_background_min_speed) / (m_background_boost_time / 4.f);
+        if(m_background_boost_time_current >= m_background_boost_time / 4.f) {
+            m_background_move_speed = m_background_max_speed;
+            m_background_mode = 2;
+        }
+        m_background_current_y -= m_background_move_speed * elapsed;
+        auto[w, h] = m_background_texture.getSize();
+        m_background_sprite.setTextureRect(sf::IntRect(0, (int)m_background_current_y, w, h));
+        return;
+    } else if(m_background_mode == 2) {
+        m_background_boost_time_current += elapsed;
+        if(m_background_boost_time_current >= m_background_boost_time * 3.f / 4.f) {
+            m_background_mode = 3;
+        }
+        m_background_current_y -= m_background_move_speed * elapsed;
+        auto[w, h] = m_background_texture.getSize();
+        m_background_sprite.setTextureRect(sf::IntRect(0, (int)m_background_current_y, w, h));
+        return;
+    } else if(m_background_mode == 3) {
+        m_background_boost_time_current += elapsed;
+        m_background_move_speed -= elapsed * (m_background_max_speed - m_background_min_speed) / (m_background_boost_time / 4.f);
+        if(m_background_boost_time_current >= m_background_boost_time) {
+            m_background_move_speed = m_background_min_speed;
+            m_background_mode = 4;
+        }
+        m_background_current_y -= m_background_move_speed * elapsed;
+        auto[w, h] = m_background_texture.getSize();
+        m_background_sprite.setTextureRect(sf::IntRect(0, (int)m_background_current_y, w, h));
+        return;
+    }
+
+    if(not m_pause) {
+        m_current_level->update(player, elapsed);
+    }
 }
 
 void LevelManager::update_demo(float elapsed) {
@@ -58,7 +105,6 @@ void LevelManager::load() {
     for(uint i = 0; i < X.size(); i++) {
         formation_temp[i] = {X[i], Y[i]};
     }
-    
 
     auto levels = Settings::get<nlohmann::json>("levels");
     for(auto& [level_name, args] : levels.items()) {
@@ -151,7 +197,7 @@ void LevelManager::load() {
                     goals.push_back(best_formation_pos[{last_pos.x, last_pos.y}][0]);
                     best_formation_pos[{last_pos.x, last_pos.y}].erase(best_formation_pos[{last_pos.x, last_pos.y}].begin());
                     enemy_id++;
-                    enemies.emplace_back(new SmallEnemy(goals, time_offset_start + time_offset * i, speed, start_rotation, m_times_played * enemy_hp, texture_path));
+                    enemies.emplace_back(new SmallEnemy(goals, time_offset_start + time_offset * i, speed, start_rotation, (m_times_played - 1) * 35 + enemy_hp, texture_path));
                     goals.pop_back();
                 }
             }
@@ -159,16 +205,22 @@ void LevelManager::load() {
 
         // Log::log(Log::INFO, "Making level, {}\n", level_name);
         uint lvl = std::stoi(level_name) + m_levels_played;
-        m_levels[std::stoi(level_name)] = std::make_shared<Level>(std::to_string(lvl), enemies, m_powerups, m_demo);
+        m_levels[std::stoi(level_name)] = std::make_shared<Level>(std::to_string(lvl), enemies, m_powerups, m_shots, m_demo);
     }
 
     m_current_level = m_levels[Settings::get<int>("start_level")];
     m_current_level_number = Settings::get<int>("start_level");
 }
 
+void LevelManager::flip_pause() {
+    Log::log(Log::INFO, "FLIP PAUSE\n");
+    m_pause = not m_pause;
+}
+
 LevelManager::LevelManager(bool demo)
-    : m_levels_played{0}, m_times_played{0}, m_demo{demo} {
+    : m_levels_played{0}, m_times_played{0}, m_demo{demo}, m_pause{false} {
     m_powerups = std::make_shared<std::vector<PowerUp>>();
+    m_shots = std::make_shared<std::vector<std::unique_ptr<Shot>>>();
     
     m_background_current_y = 0.f;
     m_background_texture.loadFromFile("Resources/Background/2.png");

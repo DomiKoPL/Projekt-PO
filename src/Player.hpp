@@ -34,6 +34,8 @@ public:
     int get_score() const;
     void give_shield(float shield_time);
     bool is_dead() const;
+    int get_weapon_number() const;
+    float get_move_speed() const;
 
     void add_speed(float speed);
     void increase_shoot_speed();

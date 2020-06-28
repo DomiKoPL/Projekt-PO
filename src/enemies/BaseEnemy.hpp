@@ -16,6 +16,7 @@ protected:
     float m_rotation;
     bool m_path_end;
     float m_random_goal_x;
+    float m_random_down_speed;
     
     sf::Sprite m_death;
     Animation m_death_animation;
@@ -27,6 +28,7 @@ public:
     bool is_visible() const;
     bool is_outside() const;
     bool is_dead() const;
+    bool died() const;
     bool path_end();
     void deal_dmg(uint dmg);
     void move_right(float elapsed);

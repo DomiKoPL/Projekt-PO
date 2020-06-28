@@ -5,6 +5,7 @@
 #include "../Log.hpp"
 #include "../TextureManager.hpp"
 #include "../gui/TextGenerator.hpp"
+#include "../Settings.hpp"
 
 void GameScreen::draw(sf::RenderWindow& window) {
 
@@ -22,45 +23,56 @@ void GameScreen::draw(sf::RenderWindow& window) {
 
     // HUD
 
-    int player_life = m_player.get_life();
-    for(int i = 0; i < player_life; i++) {
-        m_player_life_sprite.setPosition(20 + i * 40, 40);
-        window.draw(m_player_life_sprite);
+    if(not m_pause) {
+        int player_life = m_player.get_life();
+        for(int i = 0; i < player_life; i++) {
+            m_player_life_sprite.setPosition(20 + i * 40, 40);
+            window.draw(m_player_life_sprite);
+        }
+        
+        sf::RectangleShape shape;
+        shape.setPosition(20, 90);
+        float p = (m_player.get_move_speed() - Settings::get<float>("player", "move_speed", "min")) / Settings::get<float>("player", "move_speed", "max");
+        shape.setSize({5 + p * 120, 20.f});
+        shape.setFillColor(sf::Color::Red);
+        window.draw(shape);
     }
 }
 
 void GameScreen::update(sf::RenderWindow& window, float elapsed) {
     // Log::log(Log::INFO, "UPDATE GAME {} \n", 1.0 / elapsed);
 
-    if(m_player.is_dead()) {
-        m_level_manager.update(m_player, elapsed);
-        m_player.update(elapsed);
-        m_time_from_death += elapsed;
-
-
-        if(m_time_from_death > 2.0f and sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-            MusicManager::instance().stop_music("Resources/Space Shooter - 1/Music/4.ogg");
-            ScreenManager::set_screen("MainMenuScreen");
-        }
-    } else {
-        m_level_manager.update(m_player, elapsed);
-        m_player.update(elapsed);
-
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) or sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-            m_player.move_left(elapsed);
-        }
-
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) or sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-            m_player.move_right(elapsed);
-        }
-
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-            m_player.shoot();
-        }
-
+    if(not m_pause) {
         if(m_player.is_dead()) {
-            MusicManager::instance().stop_music("Resources/Space Shooter - 1/Music/1.ogg");
-            MusicManager::instance().play_music("Resources/Space Shooter - 1/Music/4.ogg");
+            m_level_manager.update(m_player, elapsed);
+            m_player.update(elapsed);
+            m_time_from_death += elapsed;
+
+
+            if(m_time_from_death > 2.0f and sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+                MusicManager::instance().stop_music("Resources/Space Shooter - 1/Music/4.ogg");
+                ScreenManager::set_screen("MainMenuScreen");
+            }
+        } else {
+            m_level_manager.update(m_player, elapsed);
+            m_player.update(elapsed);
+
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) or sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+                m_player.move_left(elapsed);
+            }
+
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) or sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+                m_player.move_right(elapsed);
+            }
+
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+                m_player.shoot();
+            }
+
+            if(m_player.is_dead()) {
+                MusicManager::instance().stop_music("Resources/Space Shooter - 1/Music/1.ogg");
+                MusicManager::instance().play_music("Resources/Space Shooter - 1/Music/4.ogg");
+            }
         }
     }
 }
@@ -70,9 +82,8 @@ void GameScreen::handle_event(sf::RenderWindow& window, sf::Event event) {
 
     if(event.type == sf::Event::KeyPressed) {
         if(event.key.code == sf::Keyboard::Escape) {
-            MusicManager::instance().stop_music("Resources/Space Shooter - 1/Music/1.ogg");
-            MusicManager::instance().stop_music("Resources/Space Shooter - 1/Music/4.ogg");
-            ScreenManager::set_screen("MainMenuScreen");
+            m_level_manager.flip_pause();
+            m_pause = not m_pause;
         }
     }
 }
@@ -83,7 +94,6 @@ void GameScreen::reset() {
 
     m_level_manager = LevelManager();
     m_level_manager.load();
-
 
     m_player = Player();
 
@@ -111,6 +121,7 @@ void GameScreen::reset() {
 }
 
 GameScreen::GameScreen() {
+    m_pause = false;
     m_level_manager = LevelManager();
     m_level_manager.load();
 

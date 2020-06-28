@@ -1,1 +1,1 @@
-find . -name '*pp' | xargs wc -l  | sort -nr
+find . -name '*pp' | xargs wc -l  | sort -n

@@ -9,6 +9,7 @@
 class GameScreen : public BaseScreen {
 private:
     Player m_player;
+    
     sf::Texture m_level_texture;
     sf::Sprite m_level_sprite;
 
@@ -20,6 +21,8 @@ private:
     sf::Texture m_press_space_texture;
     sf::Sprite m_press_space;
     float m_time_from_death;
+
+    bool m_pause;
 public:
     void draw(sf::RenderWindow& window);
     void update(sf::RenderWindow& window, float elapsed);

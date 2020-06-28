@@ -139,6 +139,10 @@ bool BaseEnemy::is_dead() const {
     return m_hp == 0;
 }
 
+bool BaseEnemy::died() const {
+    return m_hp == 0 and m_death_animation.get_progrees() == 0.0;
+}
+
 bool BaseEnemy::path_end() {
     if(m_path_end) return true;
     return m_path_end = (std::abs(m_rotation - 270.f) < 0.001f and m_current_goal == m_goals.size());
@@ -179,6 +183,7 @@ void BaseEnemy::move_random_down(float elapsed) {
             dx = -dx;
         }
         m_random_goal_x = m_sprite.getPosition().x + dx;
+        m_random_down_speed = random(0.3f, 0.8f) * m_speed;
         return;
     }
 
@@ -196,6 +201,7 @@ void BaseEnemy::move_random_down(float elapsed) {
             dx = -dx;
         }
         m_random_goal_x = m_sprite.getPosition().x + dx;
+        m_random_down_speed = random(0.3f, 0.8f) * m_speed;
     }
 
     float dx = m_random_goal_x - m_sprite.getPosition().x;
@@ -207,7 +213,7 @@ void BaseEnemy::move_random_down(float elapsed) {
         dx = std::min(dx, elapsed * m_speed);
     }
     
-    move(dx, random(0.8f, 1.f) * elapsed * m_speed);
+    move(dx, elapsed * m_random_down_speed);
 }
 
 
@@ -224,17 +230,17 @@ BaseEnemy::BaseEnemy(std::vector<sf::Vector2f> goals, float time_offset, float s
         m_hp{hp},
         m_rotation{start_rotation},
         m_path_end{false}, 
-        m_random_goal_x{-10}
+        m_random_goal_x{-10},
+        m_random_down_speed{speed}
     {
     set_texture(texture_path);
     set_position(goals.at(0));
     set_rotation(0);
-
+    
     m_death.setTexture(TextureManager::instance().get_texture("Resources/Space Shooter - 1/Fx/Fx7.png"));
     int w = 656 / 8;
     m_death.setTextureRect(sf::IntRect(0, 0, w, 72));
     m_death.setOrigin(w / 2.f, 72.f / 2);
-    // 656 / 8, 72
     for(int i = 0; i < 8; i++) {
         m_death_animation.addFrame({sf::IntRect(i * w, 0, w, 72), 0.05});
     }

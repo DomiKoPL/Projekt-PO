@@ -45,14 +45,14 @@ PowerUp::PowerUp(PowerUpType type, sf::Vector2f position) : m_type{type}, m_spee
     if(m_type == PowerUpType::SPEED) {
         path = "Resources/Space Shooter - 1/Item/PowerUp5.png";
     } else if(m_type == PowerUpType::BULLETS) {
-        path = "Resources/Space Shooter - 1/Item/PowerUp2.png";
+        path = "Resources/Space Shooter - 1/Item/PowerUp9.png";
     } else if(m_type == PowerUpType::WEAPONUPGRADE) {
-        path = "Resources/Space Shooter - 1/Item/PowerUp1.png";
+        path = "Resources/Space Shooter - 1/Item/PowerUp8.png";
     } else if(m_type == PowerUpType::SLOW) {
         path = "Resources/Space Shooter - 1/Item/PowerUp6.png";
         m_speed = 500;
     } else if(m_type == PowerUpType::WEAPONDOWNGRADE) {
-        path = "Resources/Space Shooter - 1/Item/PowerUp7.png";
+        path = "Resources/Space Shooter - 1/Item/PowerUp1.png";
         m_speed = 500;
     }
 

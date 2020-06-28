@@ -8,8 +8,8 @@
 #include "../Settings.hpp"
 
 void GameScreen::draw(sf::RenderWindow& window) {
-
     m_level_manager.draw(window);
+    
     // Log::log(Log::INFO, "DRAW GAME\n");
     // m_player.draw_collider(window);
     if(m_player.is_dead()) {
@@ -23,20 +23,33 @@ void GameScreen::draw(sf::RenderWindow& window) {
 
     // HUD
 
-    if(not m_pause) {
-        int player_life = m_player.get_life();
-        for(int i = 0; i < player_life; i++) {
-            m_player_life_sprite.setPosition(20 + i * 40, 40);
-            window.draw(m_player_life_sprite);
-        }
-        
-        sf::RectangleShape shape;
-        shape.setPosition(20, 90);
-        float p = (m_player.get_move_speed() - Settings::get<float>("player", "move_speed", "min")) / Settings::get<float>("player", "move_speed", "max");
-        shape.setSize({5 + p * 120, 20.f});
-        shape.setFillColor(sf::Color::Red);
-        window.draw(shape);
+    // sf::RectangleShape left_bar;
+    // left_bar.setFillColor(sf::Color::Black);
+    // left_bar.setSize({150, 1080});
+    // window.draw(left_bar);
+
+    int player_life = m_player.get_life();
+    for(int i = 0; i < player_life; i++) {
+        m_player_life_sprite.setPosition(20 + i * 40, 40);
+        window.draw(m_player_life_sprite);
     }
+    
+    // sf::RectangleShape shape;
+    // shape.setPosition(20, 90);
+    // float minspeed = Settings::get<float>("player", "move_speed", "min"), maxspeed = Settings::get<float>("player", "move_speed", "max");
+    // float p = (m_player.get_move_speed() - minspeed) / (maxspeed - minspeed);
+    // shape.setSize({5 + p * 120, 20.f});
+    // shape.setFillColor(sf::Color::Red);
+
+    // sf::RectangleShape shapefreq;
+    // shapefreq.setPosition(20, 110);
+    // float minfreq = Settings::get<float>("player", "shoot_frequency", "min"), maxfreq = Settings::get<float>("player", "shoot_frequency", "max");
+    // float pfreq = (maxfreq - m_player.get_shoot_frequency()) / (maxfreq - minfreq);
+    // shapefreq.setSize({5 + pfreq * 120, 20.f});
+    // shapefreq.setFillColor(sf::Color::Blue);
+
+    // window.draw(shape);
+    // window.draw(shapefreq);
 }
 
 void GameScreen::update(sf::RenderWindow& window, float elapsed) {

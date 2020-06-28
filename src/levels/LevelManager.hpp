@@ -34,6 +34,7 @@ public:
     void load();
     void update_demo(float elapsed);
     void flip_pause();
+    uint get_current_level() const;
     LevelManager(bool demo);
     LevelManager();
     ~LevelManager();

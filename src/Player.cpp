@@ -159,6 +159,10 @@ float Player::get_move_speed() const {
     return m_move_speed;
 }
 
+float Player::get_shoot_frequency() const {
+    return m_shoot_frequency;
+}
+
 void Player::add_speed(float speed) {
     m_move_speed += speed;
     m_move_speed = std::max(m_move_speed, Settings::get<float>("player", "move_speed", "min"));

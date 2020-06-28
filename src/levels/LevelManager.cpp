@@ -217,6 +217,10 @@ void LevelManager::flip_pause() {
     m_pause = not m_pause;
 }
 
+uint LevelManager::get_current_level() const {
+    return m_current_level_number;
+}
+
 LevelManager::LevelManager(bool demo)
     : m_levels_played{0}, m_times_played{0}, m_demo{demo}, m_pause{false} {
     m_powerups = std::make_shared<std::vector<PowerUp>>();

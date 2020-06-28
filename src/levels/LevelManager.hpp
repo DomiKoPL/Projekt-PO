@@ -16,8 +16,13 @@ private:
     sf::Texture m_background_texture;
     sf::Sprite m_background_sprite;
 
-    float m_background_move_speed = -10.f;
+    float m_bacground_mode = 0;
+    float m_background_move_speed = 10.f;
+    float m_background_min_speed = 10.f;
+    float m_background_max_speed = 50.f;
     float m_background_current_y = 0.f;
+    float m_background_boost_time_current;
+    float m_background_boost_time = 8.f;
     
     void next_level();
 public:

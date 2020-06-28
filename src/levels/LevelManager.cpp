@@ -3,6 +3,10 @@
 #include "../Log.hpp"
 
 void LevelManager::next_level() {
+    if(m_current_level_number % 5 == 0) {
+        m_bacground_mode = 1;
+    }
+    
     m_current_level_number++;
     if(not m_levels.count(m_current_level_number)) {
         Log::log(Log::INFO, "Loading {}\n", m_current_level_number);

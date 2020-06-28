@@ -141,16 +141,16 @@ void Level::update(Player& player, float elapsed) {
         if(enemy->is_dead()) {
             //! THIS IS SHIT
             //TODO: make sth cool
-            auto x = random(0, 4000);
+            auto x = random(0, 1000);
             if(x <= 10) {
                 m_powerups->push_back(PowerUp(PowerUpType::SPEED, enemy->get_position()));
             } else if(x <= 20) {
                 m_powerups->push_back(PowerUp(PowerUpType::BULLETS, enemy->get_position()));
             } else if(x <= 30) {
                 m_powerups->push_back(PowerUp(PowerUpType::WEAPONUPGRADE, enemy->get_position()));
-            } else if(x <= 40) {
+            } else if(x <= 32) {
                 m_powerups->push_back(PowerUp(PowerUpType::WEAPONDOWNGRADE, enemy->get_position()));
-            } else if(x <= 50) {
+            } else if(x <= 36) {
                 m_powerups->push_back(PowerUp(PowerUpType::SLOW, enemy->get_position()));
             }
         }

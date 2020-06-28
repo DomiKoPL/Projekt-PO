@@ -2,6 +2,7 @@
 #include "Log.hpp"
 #include "TextureManager.hpp"
 #include "MusicManager.hpp"
+#include "Settings.hpp"
 
 void Player::move_left(float elapsed) {
     float x = m_sprite.getPosition().x - m_sprite.getGlobalBounds().width / 2;
@@ -123,10 +124,10 @@ void Player::hit() {
         Log::log(Log::INFO, "PLAYER HIT\n");
         m_life--;
         if(is_dead()) {
-            MusicManager::instance().play_sound("Resources/Space Shooter - 1/Sound/Death.wav");
+            MusicManager::instance().play_sound(Settings::get<std::string>("player", "death_sound"));
         }
         downgrade_weapon();
-        give_shield(1.5);
+        give_shield(Settings::get<float>("player", "shield_time_after_hit"));
     }
 }
 
@@ -152,8 +153,8 @@ bool Player::is_dead() const {
 
 void Player::add_speed(float speed) {
     m_move_speed += speed;
-    m_move_speed = std::max(m_move_speed, 200.f);
-    m_move_speed = std::min(m_move_speed, 2000.f);
+    m_move_speed = std::max(m_move_speed, Settings::get<float>("player", "move_speed", "min"));
+    m_move_speed = std::min(m_move_speed, Settings::get<float>("player", "move_speed", "max"));
 }
 
 void Player::increase_shoot_speed() {
@@ -176,23 +177,25 @@ void Player::downgrade_weapon() {
 }
 
 Player::Player() {
-    m_move_speed = 350.f;
-    m_shoot_frequency = 1.3f;
-    m_time_from_last_shot = 100.f;
-    m_weapon_numer = 0;
-    m_weapon = Weapons::get_weapon("0");
-    m_shield_time = 5;
-    m_life = 3;
+    m_move_speed = Settings::get<float>("player", "move_speed", "initial");
+    m_shoot_frequency = Settings::get<float>("player", "shoot_frequency", "initial");
+    m_time_from_last_shot = 100.f; // some big value
+    m_weapon_numer = Settings::get<int>("player", "weapon");
+    m_weapon = Weapons::get_weapon(std::to_string(m_weapon_numer));
+    m_shield_time = 0;
+    m_life = Settings::get<int>("player", "life", "initial");
     m_score = 0;
+
+    // shield setup
     m_shield.setTexture(TextureManager::instance().get_texture("Resources/Space Shooter - 1/Fx/Shield.png"));
     auto c = m_shield.getColor();
     c.a = 150;
     m_shield.setColor(c);
     auto box = TextureManager::instance().get_texture("Resources/Space Shooter - 1/Fx/Shield.png").getSize();
-
     m_shield.setOrigin(box.x / 2, box.y / 2);
     m_shield.setScale(1.6, 1.6);
 
+    // death animation setup
     m_death.setTexture(TextureManager::instance().get_texture("Resources/Space Shooter - 1/Fx/Fx7.png"));
     int w = 656 / 8;
     m_death.setTextureRect(sf::IntRect(0, 0, w, 72));

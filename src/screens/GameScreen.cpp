@@ -30,7 +30,7 @@ void GameScreen::draw(sf::RenderWindow& window) {
 }
 
 void GameScreen::update(sf::RenderWindow& window, float elapsed) {
-    Log::log(Log::INFO, "UPDATE GAME {} \n", 1.0 / elapsed);
+    // Log::log(Log::INFO, "UPDATE GAME {} \n", 1.0 / elapsed);
 
     if(m_player.is_dead()) {
         m_level_manager.update(m_player, elapsed);

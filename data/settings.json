@@ -11,7 +11,7 @@
                     "count": 15,
                     "speed": 280.0,
                     "start_rotation": 90,
-                    "time_offset": 0.5,
+                    "time_offset": 0.25,
                     "time_offset_start": 3.0,
                     "type": "small"
                 },
@@ -21,7 +21,7 @@
                     "count": 15,
                     "speed": 280.0,
                     "start_rotation": 90,
-                    "time_offset": 0.5,
+                    "time_offset": 0.25,
                     "time_offset_start": 3.0,
                     "type": "small"
                 }
@@ -669,6 +669,11 @@
         "weapon": 0
     },
     "start_level": 1,
+    "volume": {
+        "master": 80.0,
+        "music": 20.0,
+        "sound": 10.0
+    },
     "weapons": {
         "0": {
             "angles": [ 0 ],

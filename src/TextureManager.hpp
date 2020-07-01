@@ -8,4 +8,5 @@ private:
 public:
     static TextureManager& instance();
     sf::Texture& get_texture(const std::string path);
+    void add_texture(const std::string name, sf::Texture&& texture);
 };

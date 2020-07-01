@@ -23,6 +23,10 @@ private:
     float m_time_from_death;
 
     bool m_pause;
+
+    Button m_menu;
+    Button m_resume;
+    sf::Sprite m_pause_sprite;
 public:
     void draw(sf::RenderWindow& window);
     void update(sf::RenderWindow& window, float elapsed);

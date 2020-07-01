@@ -32,6 +32,11 @@ public:
         data[property_id] = value;
     }
 
+    template <class TYPE>
+    static void set(const std::string property_id1, const std::string property_id2, TYPE value) {
+        data[property_id1][property_id2] = value;
+    }
+
     template<class TYPE>
     static void add(const std::string property_id, TYPE value) {
         data[property_id] = value;

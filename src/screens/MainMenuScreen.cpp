@@ -39,7 +39,13 @@ void MainMenuScreen::handle_event(sf::RenderWindow& window, sf::Event event) {
     }
 }
 
+void MainMenuScreen::reset() {
+    m_level_manager = LevelManager(true);
+    m_level_manager.load();
+}
+
 MainMenuScreen::MainMenuScreen() {
+    MusicManager::instance().play_music("Resources/Space Shooter - 1/Music/3.ogg");
     play_button.add_function_when_clicked([&]() {
         // Log::log(Log::INFO, "Button clicked\n");
         MusicManager::instance().stop_music("Resources/Space Shooter - 1/Music/3.ogg");
@@ -81,12 +87,6 @@ MainMenuScreen::MainMenuScreen() {
         m_name.setOrigin(x / 2, 0);
         m_name.setPosition(1920 / 2, 50);
     }
-}
-
-void MainMenuScreen::reset() {
-    MusicManager::instance().play_music("Resources/Space Shooter - 1/Music/3.ogg");
-    m_level_manager = LevelManager(true);
-    m_level_manager.load();
 }
 
 MainMenuScreen::~MainMenuScreen() {

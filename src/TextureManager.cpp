@@ -12,3 +12,7 @@ sf::Texture& TextureManager::get_texture(const std::string path) {
     }
     return m_textures[path];
 }
+
+void TextureManager::add_texture(const std::string name, sf::Texture&& texture) {
+    m_textures[name] = std::move(texture);
+}

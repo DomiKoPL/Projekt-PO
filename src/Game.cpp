@@ -30,7 +30,7 @@ Game::Game() {
 	Log::set_level(Log::INFO);
 	Settings::load();
 
-	window.create(sf::VideoMode(Settings::get<unsigned int>("width"), Settings::get<unsigned int>("height")), "SPACE WAR", sf::Style::None | sf::Style::Close | sf::Style::Resize);
+	window.create(sf::VideoMode(Settings::get<unsigned int>("width"), Settings::get<unsigned int>("height")), "SPACE WAR", sf::Style::Fullscreen);
 
 	//* dzieki View wszedzie zakladamy ze nasze okno ma rozmiar 1920x1080
 	//* uzywamy funkcji window.mapPixelToCoords(point) do zamiany wspolrzednych

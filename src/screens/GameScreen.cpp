@@ -50,6 +50,13 @@ void GameScreen::draw(sf::RenderWindow& window) {
 
     // window.draw(shape);
     // window.draw(shapefreq);
+
+    if(m_pause) {
+        window.draw(m_menu);
+        window.draw(m_resume);
+
+        window.draw(m_pause_sprite);
+    }
 }
 
 void GameScreen::update(sf::RenderWindow& window, float elapsed) {
@@ -64,6 +71,7 @@ void GameScreen::update(sf::RenderWindow& window, float elapsed) {
 
             if(m_time_from_death > 2.0f and sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
                 MusicManager::instance().stop_music("Resources/Space Shooter - 1/Music/4.ogg");
+                MusicManager::instance().play_music("Resources/Space Shooter - 1/Music/3.ogg");
                 ScreenManager::set_screen("MainMenuScreen");
             }
         } else {
@@ -87,6 +95,9 @@ void GameScreen::update(sf::RenderWindow& window, float elapsed) {
                 MusicManager::instance().play_music("Resources/Space Shooter - 1/Music/4.ogg");
             }
         }
+    } else {
+        m_menu.update(window);
+        m_resume.update(window);
     }
 }
 
@@ -98,6 +109,11 @@ void GameScreen::handle_event(sf::RenderWindow& window, sf::Event event) {
             m_level_manager.flip_pause();
             m_pause = not m_pause;
         }
+    }
+
+    if(m_pause) {
+        m_menu.update(window, event);
+        m_resume.update(window, event);
     }
 }
 
@@ -162,5 +178,32 @@ GameScreen::GameScreen() {
         auto [x, y] = m_press_space_texture.getSize();
         m_press_space.setOrigin(x / 2, 0);
         m_press_space.setPosition(1920.f / 2, 1080 / 2 + 140);
+    }
+
+    m_menu.load_texture("Resources/PNG/Buttons/home.png");
+    m_menu.load_highlight_texture("Resources/PNG/Buttons/home_locked.png");
+    m_menu.set_width(100);
+    m_menu.setPosition(1920.f / 2 - 80.f, 1080.f / 2);
+    m_menu.add_function_when_clicked([&]() {
+        MusicManager::instance().stop_music("Resources/Space Shooter - 1/Music/4.ogg");
+        MusicManager::instance().play_music("Resources/Space Shooter - 1/Music/3.ogg");
+        ScreenManager::set_screen("MainMenuScreen");
+    });
+
+    m_resume.load_texture("Resources/PNG/Buttons/play.png");
+    m_resume.load_highlight_texture("Resources/PNG/Buttons/play_locked.png");
+    m_resume.set_width(100);
+    m_resume.setPosition(1920.f / 2 + 80.f, 1080.f / 2);
+    m_resume.add_function_when_clicked([&]() {
+        m_level_manager.flip_pause();
+        m_pause = not m_pause;
+    });
+
+    {
+        TextureManager::instance().add_texture("pause", TextGenerator::get_text_texture("PAUSE", 37 * 4 * 5));
+        m_pause_sprite.setTexture(TextureManager::instance().get_texture("pause"));
+        auto[w, h] = TextureManager::instance().get_texture("pause").getSize();
+        m_pause_sprite.setOrigin(w / 2, h / 2);
+        m_pause_sprite.setPosition(1920.f / 2, 500.f);
     }
 }

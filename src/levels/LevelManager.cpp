@@ -1,20 +1,23 @@
 #include "LevelManager.hpp"
 #include "../Settings.hpp"
 #include "../Log.hpp"
+#include "../effects/MovingBackground.hpp"
 
 void LevelManager::next_level() {
-    if(m_background_mode == 0) {
-        if(m_current_level_number % 5 == 0) {
-            m_background_mode = 1;
-            m_background_boost_time_current = 0.f;
+    if(not m_demo) {
+        if(MovingBackground::instance().get_mode() == 0) {
+            if(m_current_level_number % 5 == 0) {
+                MovingBackground::instance().change_mode(1);
+                return;
+            }
+        } else if(MovingBackground::instance().get_mode() != 4) {
             return;
         }
-    } else if(m_background_mode != 4) {
-        return;
     }
     
     m_current_level_number++;
-    m_background_mode = 0;
+    MovingBackground::instance().change_mode(0);
+
     if(not m_levels.count(m_current_level_number)) {
         Log::log(Log::INFO, "Loading {}\n", m_current_level_number);
         m_levels_played += m_current_level_number - 1;
@@ -27,76 +30,34 @@ void LevelManager::next_level() {
 }
 
 void LevelManager::draw(sf::RenderWindow& window) {
-    window.draw(m_background_sprite);
+    MovingBackground::instance().draw(window);
     m_current_level->draw(window);
 }
 
 void LevelManager::update(Player& player, float elapsed) {
-    if(m_background_mode == 0) {
-        m_background_current_y -= m_background_move_speed * elapsed;
-        auto[w, h] = m_background_texture.getSize();
-        m_background_sprite.setTextureRect(sf::IntRect(0, (int)m_background_current_y, w, h));
-    } 
-    
     if(m_current_level->is_end()) {
         next_level();
     }
 
-    // Log::log(Log::INFO, "mode = {}, speed = {}, time = {}\n", m_background_mode, m_background_move_speed, m_background_boost_time_current);
-    
-    if(m_background_mode == 1) {
-        m_background_boost_time_current += elapsed;
-        m_background_move_speed += elapsed *  (m_background_max_speed - m_background_min_speed) / (m_background_boost_time / 4.f);
-        if(m_background_boost_time_current >= m_background_boost_time / 4.f) {
-            m_background_move_speed = m_background_max_speed;
-            m_background_mode = 2;
-        }
-        m_background_current_y -= m_background_move_speed * elapsed;
-        auto[w, h] = m_background_texture.getSize();
-        m_background_sprite.setTextureRect(sf::IntRect(0, (int)m_background_current_y, w, h));
-        return;
-    } else if(m_background_mode == 2) {
-        m_background_boost_time_current += elapsed;
-        if(m_background_boost_time_current >= m_background_boost_time * 3.f / 4.f) {
-            m_background_mode = 3;
-        }
-        m_background_current_y -= m_background_move_speed * elapsed;
-        auto[w, h] = m_background_texture.getSize();
-        m_background_sprite.setTextureRect(sf::IntRect(0, (int)m_background_current_y, w, h));
-        return;
-    } else if(m_background_mode == 3) {
-        m_background_boost_time_current += elapsed;
-        m_background_move_speed -= elapsed * (m_background_max_speed - m_background_min_speed) / (m_background_boost_time / 4.f);
-        if(m_background_boost_time_current >= m_background_boost_time) {
-            m_background_move_speed = m_background_min_speed;
-            m_background_mode = 4;
-        }
-        m_background_current_y -= m_background_move_speed * elapsed;
-        auto[w, h] = m_background_texture.getSize();
-        m_background_sprite.setTextureRect(sf::IntRect(0, (int)m_background_current_y, w, h));
-        return;
-    }
-
+    MovingBackground::instance().update(elapsed);
+   
     if(not m_pause) {
         m_current_level->update(player, elapsed);
     }
 }
 
 void LevelManager::update_demo(float elapsed) {
-    m_background_current_y += m_background_move_speed * elapsed;
-    auto[w, h] = m_background_texture.getSize();
-    m_background_sprite.setTextureRect(sf::IntRect(0, (int)m_background_current_y, w, h));
+    MovingBackground::instance().update(elapsed);
 
     if(m_current_level->is_end()) {
         next_level();
     }
+    
     m_current_level->update_demo(elapsed);
 }
 
 void LevelManager::load() {
     m_times_played++;
-
-    m_background_sprite.setTexture(m_background_texture);
 
     auto formation_json = Settings::get<nlohmann::json>("levels_formation");
     auto X = formation_json.at("X").get<std::vector<float>>();
@@ -225,15 +186,6 @@ LevelManager::LevelManager(bool demo)
     : m_levels_played{0}, m_times_played{0}, m_demo{demo}, m_pause{false} {
     m_powerups = std::make_shared<std::vector<PowerUp>>();
     m_shots = std::make_shared<std::vector<std::unique_ptr<Shot>>>();
-    
-    m_background_current_y = 0.f;
-    m_background_texture.loadFromFile("Resources/Background/2.png");
-    m_background_texture.setRepeated(true);
-    
-    m_background_sprite.setTexture(m_background_texture);
-
-    auto[tmpx, tmpy] = m_background_texture.getSize();
-    m_background_sprite.setScale(1920.f / tmpx, 1080.f / tmpy);
 }
 
 LevelManager::LevelManager() : LevelManager(false) {

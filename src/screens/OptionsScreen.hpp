@@ -2,7 +2,6 @@
 #include "BaseScreen.hpp"
 #include "../gui/Button.hpp"
 #include "../gui/ProgressBar.hpp"
-#include "../levels/LevelManager.hpp"
 
 class OptionsScreen : public BaseScreen {
 private:
@@ -22,8 +21,6 @@ private:
 
     std::vector<std::reference_wrapper<Button>> m_buttons;
     std::vector<std::reference_wrapper<ProgressBar>> m_bars;
-
-    LevelManager m_level_manager;
 public:
     void draw(sf::RenderWindow& window);
     void update(sf::RenderWindow& window, float elapsed);

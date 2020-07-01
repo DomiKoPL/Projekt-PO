@@ -4,10 +4,12 @@
 #include "../Settings.hpp"
 #include "../MusicManager.hpp"
 #include "../TextureManager.hpp"
+#include "../gui/TextGenerator.hpp"
+#include "../effects/MovingBackground.hpp"
 
 void OptionsScreen::draw(sf::RenderWindow& window) {
     // Log::log(Log::INFO, "DRAW Options\n");
-    m_level_manager.draw(window);
+    MovingBackground::instance().draw(window);
 
     for(auto& button : m_buttons) {
         window.draw(button.get());
@@ -24,7 +26,7 @@ void OptionsScreen::draw(sf::RenderWindow& window) {
 
 void OptionsScreen::update(sf::RenderWindow& window, float elapsed) {
     // Log::log(Log::INFO, "UPDATE Options\n");
-    m_level_manager.update_demo(elapsed);
+    MovingBackground::instance().update(elapsed);
 
     for(auto& button : m_buttons) {
         button.get().update(window);
@@ -43,8 +45,7 @@ void OptionsScreen::handle_event(sf::RenderWindow& window, sf::Event event) {
 }
 
 void OptionsScreen::reset() {
-    m_level_manager = LevelManager(true);
-    m_level_manager.load();
+
 }
 
 OptionsScreen::OptionsScreen() {

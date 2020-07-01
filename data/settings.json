@@ -670,9 +670,9 @@
     },
     "start_level": 1,
     "volume": {
-        "master": 80.0,
-        "music": 45.0,
-        "sound": 40.0
+        "master": 70.0,
+        "music": 30.0,
+        "sound": 25.0
     },
     "weapons": {
         "0": {

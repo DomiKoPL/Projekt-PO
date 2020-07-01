@@ -118,6 +118,7 @@ void GameScreen::handle_event(sf::RenderWindow& window, sf::Event event) {
 }
 
 void GameScreen::reset() {
+    m_pause = false;
     MusicManager::instance().play_music("Resources/Space Shooter - 1/Music/1.ogg");
     m_time_from_death = 0;
 

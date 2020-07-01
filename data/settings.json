@@ -671,8 +671,8 @@
     "start_level": 1,
     "volume": {
         "master": 70.0,
-        "music": 30.0,
-        "sound": 25.0
+        "music": 40.0,
+        "sound": 20.0
     },
     "weapons": {
         "0": {

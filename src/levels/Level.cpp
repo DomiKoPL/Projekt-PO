@@ -31,8 +31,9 @@ void Level::random_powerup(Player& player, std::shared_ptr<BaseEnemy>& enemy) {
     }
     x -= 5;
 
-    float p = std::pow((8.f - player.get_weapon_number()), 2.f) / 64.f;
+    float p = std::pow((8.f - player.get_weapon_number()), 3.f) / std::pow(8.f, 3.f);
 
+    Log::log(Log::INFO, "p = {}\n", 7 * p);
     if(x <= 7 * p) {
         m_powerups->push_back(PowerUp(PowerUpType::WEAPONUPGRADE, enemy->get_position()));
         return;

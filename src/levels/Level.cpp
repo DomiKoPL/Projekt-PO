@@ -13,27 +13,38 @@ T random(T min, T max) {
 
 void Level::random_powerup(Player& player, std::shared_ptr<BaseEnemy>& enemy) {
     auto x = random(0.f, 100.f);
-    if(x <= 5) {
+    if(x <= 4) {
         m_powerups->push_back(PowerUp(PowerUpType::SPEED, enemy->get_position()));
         return;
     }
-    x -= 5;
+    x -= 4;
 
-    if(x <= 5) {
-        m_powerups->push_back(PowerUp(PowerUpType::BULLETS, enemy->get_position()));
-        return;
-    }
-    x -= 5;
-    
-    if(x <= 5) {
+    if(x <= 4) {
         m_powerups->push_back(PowerUp(PowerUpType::SLOW, enemy->get_position()));
         return;
     }
-    x -= 5;
+    x -= 4;
+
+    if(x <= 4) {
+        m_powerups->push_back(PowerUp(PowerUpType::BULLETSUPGRADE, enemy->get_position()));
+        return;
+    }
+    x -= 4;
+   
+    if(x <= 4) {
+        m_powerups->push_back(PowerUp(PowerUpType::BULLETSDOWNGRADE, enemy->get_position()));
+        return;
+    }
+    x -= 4;
+
+    if(x <= 1) {
+        m_powerups->push_back(PowerUp(PowerUpType::LIFE, enemy->get_position()));
+        return;
+    }
+    x -= 1;
 
     float p = std::pow((8.f - player.get_weapon_number()), 3.f) / std::pow(8.f, 3.f);
 
-    Log::log(Log::INFO, "p = {}\n", 7 * p);
     if(x <= 7 * p) {
         m_powerups->push_back(PowerUp(PowerUpType::WEAPONUPGRADE, enemy->get_position()));
         return;

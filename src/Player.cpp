@@ -131,6 +131,11 @@ void Player::hit() {
     }
 }
 
+void Player::add_life() {
+    m_life++;
+    m_life = std::min(m_life, Settings::get<int>("player", "life", "max"));
+}
+
 int Player::get_life() const {
     return m_life;
 }
@@ -169,9 +174,10 @@ void Player::add_speed(float speed) {
     m_move_speed = std::min(m_move_speed, Settings::get<float>("player", "move_speed", "max"));
 }
 
-void Player::increase_shoot_speed() {
-    m_shoot_frequency *= 0.95;
-    m_shoot_frequency = std::max(0.1f, m_shoot_frequency);
+void Player::add_shoot_speed(float offset) {
+    m_shoot_frequency += offset;
+    m_shoot_frequency = std::max(m_shoot_frequency, Settings::get<float>("player", "shoot_frequency", "min"));
+    m_shoot_frequency = std::min(m_shoot_frequency, Settings::get<float>("player", "shoot_frequency", "max"));
 }
 
 void Player::upgrade_weapon() {

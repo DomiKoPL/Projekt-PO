@@ -13,26 +13,28 @@ void PowerUp::update(float elapsed) {
 
 void PowerUp::change(Player& player) {
     if(m_type == PowerUpType::SPEED) {
-        player.add_speed(100);
-    } else if(m_type == PowerUpType::BULLETS) {
-        player.increase_shoot_speed();
+        player.add_speed(50);
+    } else if(m_type == PowerUpType::BULLETSUPGRADE) {
+        player.add_shoot_speed(-0.05f);
+    } else if(m_type == PowerUpType::BULLETSDOWNGRADE) {
+        player.add_shoot_speed(0.05f);
     } else if(m_type == PowerUpType::WEAPONUPGRADE) {
         player.upgrade_weapon();
     } else if(m_type == PowerUpType::SLOW) {
         player.add_speed(-50);
     } else if(m_type == PowerUpType::WEAPONDOWNGRADE) {
         player.downgrade_weapon();
+    } else if(m_type == PowerUpType::LIFE) {
+        player.add_life();
     }
 
     m_used = true;  
 }
 
-#include "Log.hpp"
 
 bool PowerUp::is_dead() const {
-    auto [x, y] = m_sprite.getPosition();
-    // Log::log(Log::INFO, "Power = {} {} {}\n", int(m_used), x, y);
     if(m_used) return true;
+    auto [x, y] = m_sprite.getPosition();
     return (x < -100 or x > 2020 or y < - 30 or y > 1180);
 }
 
@@ -44,8 +46,11 @@ PowerUp::PowerUp(PowerUpType type, sf::Vector2f position) : m_type{type}, m_spee
     std::string path;
     if(m_type == PowerUpType::SPEED) {
         path = "Resources/Space Shooter - 1/Item/PowerUp5.png";
-    } else if(m_type == PowerUpType::BULLETS) {
+    } else if(m_type == PowerUpType::BULLETSUPGRADE) {
         path = "Resources/Space Shooter - 1/Item/PowerUp9.png";
+    } else if(m_type == PowerUpType::BULLETSDOWNGRADE) {
+        path = "Resources/Space Shooter - 1/Item/PowerUp10.png";
+        m_speed = 500; 
     } else if(m_type == PowerUpType::WEAPONUPGRADE) {
         path = "Resources/Space Shooter - 1/Item/PowerUp8.png";
     } else if(m_type == PowerUpType::SLOW) {
@@ -54,6 +59,8 @@ PowerUp::PowerUp(PowerUpType type, sf::Vector2f position) : m_type{type}, m_spee
     } else if(m_type == PowerUpType::WEAPONDOWNGRADE) {
         path = "Resources/Space Shooter - 1/Item/PowerUp1.png";
         m_speed = 500;
+    } else if(m_type == PowerUpType::LIFE) {
+        path = "Resources/Space Shooter - 1/HUD/LifeIcon.png";
     }
 
     auto& texture = TextureManager::instance().get_texture(path);

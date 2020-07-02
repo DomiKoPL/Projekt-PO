@@ -3,7 +3,7 @@
 #include "colliders/ConvexColliders.hpp"
 
 enum PowerUpType {
-    SPEED, SLOW, BULLETS, WEAPONUPGRADE, WEAPONDOWNGRADE
+    SPEED, SLOW, BULLETSUPGRADE, BULLETSDOWNGRADE, WEAPONUPGRADE, WEAPONDOWNGRADE, LIFE
 };
 
 class PowerUp : public sf::Drawable, public ConvexColliders {

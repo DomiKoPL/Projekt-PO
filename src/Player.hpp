@@ -29,6 +29,7 @@ public:
     std::vector<std::unique_ptr<Shot>>& get_shots();
     void update(float elapsed);
     void hit();
+    void add_life();
     int get_life() const;
     void add_score(int score);
     int get_score() const;
@@ -39,7 +40,7 @@ public:
     float get_shoot_frequency() const;
 
     void add_speed(float speed);
-    void increase_shoot_speed();
+    void add_shoot_speed(float offset);
     void upgrade_weapon();
     void downgrade_weapon();
 

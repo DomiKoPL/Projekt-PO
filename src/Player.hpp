@@ -25,25 +25,31 @@ private:
 public:
     void move_left(float elapsed);
     void move_right(float elapsed);
+    void update(float elapsed);
+
     void shoot();
     std::vector<std::unique_ptr<Shot>>& get_shots();
-    void update(float elapsed);
     void hit();
-    void add_life();
-    int get_life() const;
+    
+    bool is_dead() const;
+    
     void add_score(int score);
     int get_score() const;
-    void give_shield(float shield_time);
-    bool is_dead() const;
-    int get_weapon_number() const;
-    float get_move_speed() const;
-    float get_shoot_frequency() const;
+
+    void add_life();
+    int get_life() const;
 
     void add_speed(float speed);
+    float get_move_speed() const;
+
     void add_shoot_speed(float offset);
+    float get_shoot_frequency() const;
+    
     void upgrade_weapon();
     void downgrade_weapon();
+    int get_weapon_number() const;
 
+    void give_shield(float shield_time);
     
     Player();
 };

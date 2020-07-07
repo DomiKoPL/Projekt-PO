@@ -132,8 +132,11 @@ void Player::hit() {
 }
 
 void Player::add_life() {
-    m_life++;
-    m_life = std::min(m_life, Settings::get<int>("player", "life", "max"));
+    if(m_life == Settings::get<int>("player", "life", "max")) {
+        add_score(10);
+    } else {
+        m_life++;
+    }
 }
 
 int Player::get_life() const {
